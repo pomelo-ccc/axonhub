@@ -13,6 +13,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
+import { getCurrentAppPath, isAuthAppPath } from '@/lib/app-base';
 import { useSidebarData } from '../sidebar';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -109,14 +110,8 @@ export function CommandMenu() {
   }
 
   // Don't render on auth pages (sign-in, sign-up, initialization, etc.)
-  const currentPath = window.location.pathname;
-  if (
-    currentPath.startsWith('/sign-in') ||
-    currentPath.startsWith('/sign-up') ||
-    currentPath.startsWith('/initialization') ||
-    currentPath.startsWith('/forgot-password') ||
-    currentPath.startsWith('/otp')
-  ) {
+  const currentPath = getCurrentAppPath();
+  if (isAuthAppPath(currentPath)) {
     return null;
   }
 

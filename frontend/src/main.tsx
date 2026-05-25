@@ -8,6 +8,7 @@ import { handleServerError } from '@/utils/handle-server-error';
 import { FontProvider } from './context/font-context';
 import { SearchProvider } from './context/search-context';
 import { ThemeProvider } from './context/theme-context';
+import { APP_BASE_PATH } from './lib/app-base';
 import './index.css';
 // Initialize i18n
 import './lib/i18n';
@@ -76,6 +77,7 @@ const queryClient = new QueryClient({
 const router = createRouter({
   routeTree,
   context: { queryClient },
+  ...(APP_BASE_PATH ? { basepath: APP_BASE_PATH } : {}),
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 });

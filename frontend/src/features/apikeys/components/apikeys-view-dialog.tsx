@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { MaskedCodeBlock, MaskedCodeBlockCopyButton, highlightMaskedCode } from '@/components/ai-elements/masked-code-block';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { buildAbsoluteAppUrl } from '@/lib/app-base';
 import { useApiKeysContext } from '../context/apikeys-context';
 
 function CopyBaseUrlButton({ baseUrl }: { baseUrl: string }) {
@@ -42,14 +43,16 @@ export function ApiKeysViewDialog() {
   const apiKey = selectedApiKey?.key || '';
   const maskedApiKey = selectedApiKey?.key ? selectedApiKey.key.slice(0, 3) + '...' + selectedApiKey.key.slice(-4) : '';
 
-  const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8090';
+  const openAIBaseUrl = buildAbsoluteAppUrl('/v1');
+  const anthropicBaseUrl = buildAbsoluteAppUrl('/anthropic');
+  const geminiBaseUrl = buildAbsoluteAppUrl('/gemini');
 
   const codeExamples = useMemo(() => {
     if (!selectedApiKey?.key) return {};
 
     return {
       codex: {
-        baseUrl: `${currentOrigin}/v1`,
+        baseUrl: openAIBaseUrl,
         display: `# Set your API key as an environment variable
 export AXONHUB_API_KEY="${maskedApiKey}"
 
@@ -59,7 +62,7 @@ model_provider = "axonhub-responses"
 
 [model_providers.axonhub-responses]
 name = "AxonHub using Chat Completions"
-base_url = "${currentOrigin}/v1"
+base_url = "${openAIBaseUrl}"
 env_key = "AXONHUB_API_KEY"
 wire_api = "responses"
 query_params = {}
@@ -74,7 +77,7 @@ model_provider = "axonhub-responses"
 
 [model_providers.axonhub-responses]
 name = "AxonHub using Chat Completions"
-base_url = "${currentOrigin}/v1"
+base_url = "${openAIBaseUrl}"
 env_key = "AXONHUB_API_KEY"
 wire_api = "responses"
 query_params = {}
@@ -82,37 +85,37 @@ query_params = {}
 # Restart Codex to apply the configuration`
       },
       claudeCode: {
-        baseUrl: `${currentOrigin}/anthropic`,
+        baseUrl: anthropicBaseUrl,
         display: `# In your terminal, set the API key
 export ANTHROPIC_AUTH_TOKEN="${maskedApiKey}"
-export ANTHROPIC_BASE_URL="${currentOrigin}/anthropic"
+export ANTHROPIC_BASE_URL="${anthropicBaseUrl}"
 
 # Then launch Claude Code
 claude
 
 # Or use the --api-key flag with the base URL
-claude --api-key "${maskedApiKey}" --base-url "${currentOrigin}/anthropic" "Hello, Claude!"
+claude --api-key "${maskedApiKey}" --base-url "${anthropicBaseUrl}" "Hello, Claude!"
 
 # The configuration will be stored in ~/.config/claude/config.json`,
         real: `# In your terminal, set the API key
 export ANTHROPIC_AUTH_TOKEN="${apiKey}"
-export ANTHROPIC_BASE_URL="${currentOrigin}/anthropic"
+export ANTHROPIC_BASE_URL="${anthropicBaseUrl}"
 
 # Then launch Claude Code
 claude
 
 # Or use the --api-key flag with the base URL
-claude --api-key "${apiKey}" --base-url "${currentOrigin}/anthropic" "Hello, Claude!"
+claude --api-key "${apiKey}" --base-url "${anthropicBaseUrl}" "Hello, Claude!"
 
 # The configuration will be stored in ~/.config/claude/config.json`
       },
       anthropicSDK: {
-        baseUrl: `${currentOrigin}/anthropic`,
+        baseUrl: anthropicBaseUrl,
         display: `from anthropic import Anthropic
 
 client = Anthropic(
     api_key="${maskedApiKey}",
-    base_url="${currentOrigin}/anthropic"
+    base_url="${anthropicBaseUrl}"
 )
 
 message = client.messages.create(
@@ -131,7 +134,7 @@ print(message.content)`,
 
 client = Anthropic(
     api_key="${apiKey}",
-    base_url="${currentOrigin}/anthropic"
+    base_url="${anthropicBaseUrl}"
 )
 
 message = client.messages.create(
@@ -148,12 +151,12 @@ message = client.messages.create(
 print(message.content)`
       },
       openAISDK: {
-        baseUrl: `${currentOrigin}/v1`,
+        baseUrl: openAIBaseUrl,
         display: `from openai import OpenAI
 
 client = OpenAI(
     api_key="${maskedApiKey}",
-    base_url="${currentOrigin}/v1"
+    base_url="${openAIBaseUrl}"
 )
 
 response = client.responses.create(
@@ -166,7 +169,7 @@ print(response.output_text)`,
 
 client = OpenAI(
     api_key="${apiKey}",
-    base_url="${currentOrigin}/v1"
+    base_url="${openAIBaseUrl}"
 )
 
 response = client.responses.create(
@@ -177,13 +180,13 @@ response = client.responses.create(
 print(response.output_text)`
       },
       geminiSDK: {
-        baseUrl: `${currentOrigin}/gemini`,
+        baseUrl: geminiBaseUrl,
         display: `from google import genai
 from google.genai import types
 
 client = genai.Client(
     api_key="${maskedApiKey}",
-    base_url="${currentOrigin}/gemini"
+    base_url="${geminiBaseUrl}"
 )
 
 response = client.models.generate_content(
@@ -201,7 +204,7 @@ from google.genai import types
 
 client = genai.Client(
     api_key="${apiKey}",
-    base_url="${currentOrigin}/gemini"
+    base_url="${geminiBaseUrl}"
 )
 
 response = client.models.generate_content(
@@ -216,7 +219,7 @@ response = client.models.generate_content(
 print(response.text)`
       }
     };
-  }, [selectedApiKey?.key, apiKey, maskedApiKey]);
+  }, [selectedApiKey?.key, apiKey, maskedApiKey, openAIBaseUrl, anthropicBaseUrl, geminiBaseUrl]);
 
   useEffect(() => {
     if (!selectedApiKey?.key || Object.keys(codeExamples).length === 0) return;

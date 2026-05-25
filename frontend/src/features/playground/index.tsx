@@ -24,6 +24,7 @@ import { Response as UIResponse } from '@/components/ai-elements/response';
 import { AutoCompleteSelect } from '@/components/auto-complete-select';
 import { useQueryChannels } from '@/features/channels/data/channels';
 import { useQueryModels } from '@/features/models/data/models';
+import { toPublicBackendPath } from '@/lib/app-base';
 
 type PlaygroundModelSource = 'channel' | 'model_gateway';
 
@@ -97,7 +98,7 @@ export default function Playground() {
 
   const { messages, sendMessage, status, setMessages, regenerate, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: '/admin/playground/chat',
+      api: toPublicBackendPath('/admin/playground/chat'),
       credentials: 'include',
       headers: () => {
         const headers: Record<string, string> = {

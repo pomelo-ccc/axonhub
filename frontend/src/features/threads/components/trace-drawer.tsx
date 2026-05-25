@@ -65,25 +65,25 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
   }, [open]);
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+      <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side='right' className={cn('w-full p-0 transition-all duration-300', isFullscreen ? 'sm:max-w-none' : 'sm:max-w-[900px] lg:max-w-[1100px]')}>
         <SheetHeader className={cn(
-          'border-b border-border/50 bg-gradient-to-r from-background via-background to-muted/20 px-6 py-4',
+          'border-b border-border/70 bg-background px-6 py-4',
           isFullscreen && 'fixed top-0 left-0 right-0 z-50'
         )}>
           <div className='flex items-center justify-between'>
             <SheetTitle className='flex items-center gap-2 text-lg font-semibold'>
-              <span className='h-5 w-1 rounded-full bg-gradient-to-b from-primary/60 via-primary to-primary/60' />
+              <span className='h-5 w-1 rounded-full bg-foreground/35' />
               {t('traces.detail.title')}
             </SheetTitle>
             
             {/* View Mode Switcher */}
             <div className='flex items-center'>
-              <div className='bg-muted inline-flex items-center rounded-md p-0.5'>
+              <div className='inline-flex items-center rounded-full border border-border/70 bg-muted/30 p-1'>
                 <Button
                   variant='ghost'
                   size='sm'
-                  className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flat' && 'bg-background shadow-sm')}
+                  className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flat' && 'border border-border/70 bg-background shadow-none')}
                   onClick={() => setViewMode('flat')}
                 >
                   <List className='h-3.5 w-3.5' />
@@ -92,7 +92,7 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
                 <Button
                   variant='ghost'
                   size='sm'
-                  className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flow' && 'bg-background shadow-sm')}
+                  className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flow' && 'border border-border/70 bg-background shadow-none')}
                   onClick={() => setViewMode('flow')}
                 >
                   <GitBranch className='h-3.5 w-3.5' />
@@ -101,7 +101,7 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
                 <Button
                   variant='ghost'
                   size='sm'
-                  className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'tree' && 'bg-background shadow-sm')}
+                  className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'tree' && 'border border-border/70 bg-background shadow-none')}
                   onClick={() => setViewMode('tree')}
                 >
                   <Waypoints className='h-3.5 w-3.5' />
@@ -150,7 +150,7 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
           </div>
         ) : effectiveRootSegment ? (
           <div className={cn(
-            'flex bg-gradient-to-br from-background via-background to-muted/10',
+            'flex bg-background',
             isFullscreen ? 'fixed inset-0 z-40 pt-16' : 'h-[calc(100vh-80px)]'
           )}>
             {/* Left: Timeline */}
@@ -182,7 +182,7 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
 
             {/* Right: Span Detail */}
             <div className={cn(
-              'border-border/50 bg-card/50 shrink-0 overflow-y-auto border-l backdrop-blur-sm transition-all duration-300',
+              'border-border/70 bg-card/85 shrink-0 overflow-y-auto border-l transition-all duration-300',
               isFullscreen ? 'w-[420px]' : 'w-[380px] lg:w-[420px]'
             )}>
               <SpanSection selectedTrace={selectedTrace} selectedSpan={selectedSpan} selectedSpanType={selectedSpanType} />
@@ -190,7 +190,7 @@ export function TraceDrawer({ open, onOpenChange, traceId }: TraceDrawerProps) {
           </div>
         ) : (
           <div className={cn(
-            'flex items-center justify-center bg-gradient-to-b from-background to-muted/20',
+            'flex items-center justify-center bg-background',
             isFullscreen ? 'fixed inset-0 z-40 pt-16' : 'h-[calc(100vh-80px)]'
           )}>
             <div className='space-y-4 text-center'>

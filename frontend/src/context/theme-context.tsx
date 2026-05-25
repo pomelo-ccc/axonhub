@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 type Theme = 'dark' | 'light' | 'system';
 type ColorScheme = 'stone' | 'paper' | 'ink';
 
-const COLOR_SCHEMES: readonly ColorScheme[] = ['stone', 'paper', 'ink'] as const;
+export const COLOR_SCHEMES: readonly ColorScheme[] = ['stone', 'paper', 'ink'] as const;
 
 function isColorScheme(value: string | null): value is ColorScheme {
   return value !== null && COLOR_SCHEMES.includes(value as ColorScheme);

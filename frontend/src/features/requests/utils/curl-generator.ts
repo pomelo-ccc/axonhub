@@ -1,5 +1,6 @@
 import { ApiFormat } from '@/features/channels/data/schema';
 import { CHANNEL_CONFIGS } from '@/features/channels/data/config_channels';
+import { buildAbsoluteAppUrl } from '@/lib/app-base';
 
 export type ChannelType = keyof typeof CHANNEL_CONFIGS;
 
@@ -69,7 +70,7 @@ export function generateCurlCommand(options: CurlGeneratorOptions): string {
     }
     url = `${cleanBaseUrl}${combinedPath}`;
   } else {
-    url = `${typeof window !== 'undefined' ? window.location.origin : ''}${apiPath}`;
+    url = buildAbsoluteAppUrl(apiPath);
   }
 
   const curlParts = [`curl '${url}'`];

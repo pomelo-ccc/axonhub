@@ -5,8 +5,18 @@ import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
 import tanstackRouter from '@tanstack/router-plugin/vite';
 
+const normalizeBasePath = (value?: string) => {
+  if (!value || value === '/') {
+    return '/';
+  }
+
+  const withLeadingSlash = value.startsWith('/') ? value : `/${value}`;
+  return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`;
+};
+
 // https://vite.dev/config/
 export default defineConfig({
+  base: normalizeBasePath(process.env.VITE_BASE_PATH),
   plugins: [
     tanstackRouter({
       target: 'react',

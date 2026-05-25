@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { graphqlRequest } from '@/gql/graphql';
+import { GRAPHQL_ENDPOINT, graphqlRequest } from '@/gql/graphql';
 import { toast } from 'sonner';
 import { getTokenFromStorage } from '@/stores/authStore';
 import i18n from '@/lib/i18n';
@@ -1206,7 +1206,7 @@ export function useRestore() {
       formData.append('0', file);
 
       const token = getTokenFromStorage();
-      const response = await fetch('/admin/graphql', {
+      const response = await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
         headers: {
           Authorization: token ? `Bearer ${token}` : '',

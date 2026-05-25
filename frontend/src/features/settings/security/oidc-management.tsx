@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import { graphqlRequest } from '@/gql/graphql';
+import { toAppPath } from '@/lib/app-base';
 import { UNLINK_OIDC_IDENTITY_MUTATION } from '@/gql/users';
 import { authApi } from '@/lib/api-client';
 import { Link as LinkIcon, Unlink } from 'lucide-react';
@@ -24,7 +25,7 @@ export default function OidcManagement({ providers }: OidcManagementProps) {
     try {
       const res = await authApi.getOIDCLinkAuthorizeURL(providerId);
       if (res.data && res.data.url) {
-        window.location.href = res.data.url;
+        window.location.href = toAppPath(res.data.url);
       }
     } catch (error: any) {
       toast.error(t('security.oidc.linkError', 'Failed to initiate linking: ') + error.message);
@@ -69,7 +70,7 @@ export default function OidcManagement({ providers }: OidcManagementProps) {
               return (
               <div
                 key={providerId}
-                className={`flex items-center justify-between rounded-lg border bg-card p-4 shadow-sm transition-all hover:shadow-md ${isInactive ? 'border-2 border-destructive' : ''}`}
+                className={`flex items-center justify-between rounded-xl border bg-card/92 p-4 shadow-none transition-[border-color,background-color] hover:bg-card ${isInactive ? 'border-destructive' : 'border-border/70'}`}
                 title={isInactive ? t('common.status.inactiveRetry') : undefined}
               >
                 <div className='flex items-center gap-3'>
@@ -92,7 +93,7 @@ export default function OidcManagement({ providers }: OidcManagementProps) {
                   <Button 
                     variant='ghost' 
                     size='sm' 
-                    className='h-9 text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors'
+                    className='h-9 text-destructive transition-colors hover:bg-destructive/8 hover:text-destructive'
                     onClick={() =>
                       setUnlinkTarget({
                         identityId: p.linked_identity_id.toString(),
@@ -108,7 +109,7 @@ export default function OidcManagement({ providers }: OidcManagementProps) {
                   <Button 
                     variant='outline' 
                     size='sm' 
-                    className='h-9 border-primary/20 hover:border-primary hover:bg-primary/5 transition-colors text-primary'
+                    className='h-9 border-border/70 bg-background/80 text-foreground transition-colors hover:bg-muted/45'
                     onClick={() => handleLink(providerId)}
                     type='button'
                   >
