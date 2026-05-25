@@ -94,7 +94,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme='system' defaultColorScheme='claude'>
+        <ThemeProvider defaultTheme='system' defaultColorScheme='stone'>
           <FontProvider>
             <SearchProvider>
               <RouterProvider router={router} />

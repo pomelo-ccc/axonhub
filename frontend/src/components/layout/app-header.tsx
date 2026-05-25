@@ -43,22 +43,19 @@ export function AppHeader() {
   }, [refreshMutation]);
 
   return (
-    <header className='bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 z-50 w-full backdrop-blur'>
-      <div className='flex h-14 items-center justify-between'>
-        {/* Logo + Project Switcher - 左侧对齐 */}
-        <div className='flex items-center gap-2 pl-6'>
-          {/* Sidebar Toggle - 与侧边栏图标垂直对齐 */}
-          <SidebarTrigger className='-ml-4 size-8' />
+    <header className='fixed top-0 z-50 w-full border-b border-border/80 bg-background/88 backdrop-blur-md'>
+      <div className='flex h-14 items-center justify-between px-4 sm:px-6'>
+        <div className='flex min-w-0 items-center gap-3'>
+          <SidebarTrigger className='size-8 rounded-full' />
 
-          {/* Logo */}
-          <div className='flex items-center gap-2'>
-            <div className='flex size-8 shrink-0 items-center justify-center overflow-hidden rounded'>
+          <div className='flex min-w-0 items-center gap-3'>
+            <div className='flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border/80 bg-card/80'>
               {brandSettings?.brandLogo ? (
                 <img
                   src={brandSettings.brandLogo}
                   alt='Brand Logo'
-                  width={24}
-                  height={24}
+                  width={28}
+                  height={28}
                   className='size-8 object-cover'
                   onError={(e) => {
                     e.currentTarget.src = '/logo.jpg';
@@ -68,27 +65,26 @@ export function AppHeader() {
                 <img src='/logo.jpg' alt='Default Logo' width={24} height={24} className='size-8 object-cover' />
               )}
             </div>
-            <span className='text-sm leading-none font-semibold'>{displayName}</span>
+            <div className='min-w-0'>
+              <span className='block truncate text-sm font-medium tracking-[-0.01em]'>{displayName}</span>
+              <span className='hidden text-[11px] uppercase tracking-[0.16em] text-muted-foreground lg:block'>Unified gateway control</span>
+            </div>
           </div>
 
-          {/* Separator */}
-          <div className='bg-border mx-0.5 h-3.5 w-px' />
-
-          {/* Project Switcher */}
-          <ProjectSwitcher />
+          <div className='hidden h-6 w-px bg-border/70 md:block' />
+          <div className='hidden md:block'>
+            <ProjectSwitcher />
+          </div>
         </div>
 
-        {/* 右侧控件 */}
-        <div className='flex items-center gap-2 pr-6'>
-          {/* Quota Badges - always visible */}
+        <div className='flex items-center gap-2'>
           <QuotaBadges onRefresh={handleRefresh} isRefreshing={isRefreshing} />
 
-          {/* Desktop-only controls - hidden on mobile */}
           {!isMobile && (
             <>
               <PermissionGuard requiredSystemScope='read_system'>
                 <Link to='/system'>
-                  <Button variant='ghost' size='icon' className='size-8'>
+                  <Button variant='outline' size='icon' className='size-8 rounded-full border-border/80 bg-card/80 shadow-none'>
                     <IconSettings className='h-4 w-4' />
                   </Button>
                 </Link>

@@ -191,7 +191,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
       <DialogContent className='flex max-h-[90vh] flex-col overflow-hidden sm:max-w-5xl'>
         <DialogHeader className='flex-shrink-0 border-b pb-4'>
           <div className='flex items-center gap-3'>
-            <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-2'>
+            <div className='rounded-xl border border-border/70 bg-muted/35 p-2 text-foreground'>
               <Upload className='h-5 w-5' />
             </div>
             <div>
@@ -206,10 +206,10 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
         <div className='flex-1 overflow-y-auto px-1 py-2'>
           <div className='space-y-6'>
             {/* Format Instructions Card */}
-            <Card className='border-l-4 border-l-primary'>
+            <Card className='border border-border/70 shadow-none'>
               <CardHeader className='pb-3'>
                 <div className='flex items-center gap-2'>
-                  <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                  <div className='rounded-xl border border-border/70 bg-muted/35 p-1.5 text-foreground'>
                     <FileText className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-sm font-medium'>{t('channels.dialogs.bulkImport.formatTitle')}</CardTitle>
@@ -219,7 +219,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
                 </CardDescription>
               </CardHeader>
               <CardContent className='space-y-4 pt-0'>
-                <div className='bg-muted/50 rounded-lg border p-3'>
+                <div className='rounded-xl border border-border/60 bg-muted/20 p-3'>
                   <code className='text-muted-foreground block text-xs whitespace-pre-wrap font-mono leading-relaxed'>
                     {exampleText}
                   </code>
@@ -232,7 +232,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
             <Card>
               <CardHeader className='pb-3'>
                 <div className='flex items-center gap-2'>
-                  <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                  <div className='rounded-xl border border-border/70 bg-muted/35 p-1.5 text-foreground'>
                     <Layers className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-sm font-medium'>{t('channels.dialogs.bulkImport.inputLabel')}</CardTitle>
@@ -276,12 +276,12 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
             {/* Preview Results */}
             {showPreview && (
               <Card
-                className={`${parseErrors.length > 0 ? 'border-l-4 border-l-red-500' : parsedChannels.length > 0 ? 'border-l-4 border-l-green-500' : ''}`}
+                className={`${parseErrors.length > 0 ? 'border-red-300/80' : parsedChannels.length > 0 ? 'border-emerald-300/80' : 'border-border/70'} shadow-none`}
               >
                 <CardHeader className='pb-3'>
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-3'>
-                      <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                      <div className='rounded-xl border border-border/70 bg-muted/35 p-1.5 text-foreground'>
                         <Sparkles className='h-4 w-4' />
                       </div>
                       <CardTitle className='text-sm font-medium'>{t('channels.dialogs.bulkImport.previewTitle')}</CardTitle>
@@ -355,8 +355,8 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
                       </div>
                       <div className='grid gap-3'>
                         {parsedChannels.map((channel, index) => (
-                          <Card key={index} className='overflow-hidden border-l-2 border-l-primary/50'>
-                            <CardHeader className='bg-muted/30 py-3'>
+                          <Card key={index} className='overflow-hidden border border-border/70 shadow-none'>
+                            <CardHeader className='border-b border-border/60 bg-muted/20 py-3'>
                               <div className='flex items-center gap-3'>
                                 <Badge variant='outline' className='text-xs font-medium'>
                                   {channel.type}
@@ -366,7 +366,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
                             </CardHeader>
                             <CardContent className='grid gap-3 py-3 sm:grid-cols-2'>
                               <div className='flex items-start gap-2'>
-                                <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                                <div className='rounded-lg border border-border/60 bg-muted/20 p-1.5 text-foreground'>
                                   <Link className='h-3.5 w-3.5' />
                                 </div>
                                 <div className='min-w-0 flex-1'>
@@ -379,7 +379,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
                                 </div>
                               </div>
                               <div className='flex items-start gap-2'>
-                                <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                                <div className='rounded-lg border border-border/60 bg-muted/20 p-1.5 text-foreground'>
                                   <Key className='h-3.5 w-3.5' />
                                 </div>
                                 <div className='min-w-0 flex-1'>
@@ -392,7 +392,7 @@ deepseek_anthropic,DeepSeek Anthropic,https://api.deepseek.com/anthropic,sk-xxx,
                                 </div>
                               </div>
                               <div className='flex items-start gap-2 sm:col-span-2'>
-                                <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+                                <div className='rounded-lg border border-border/60 bg-muted/20 p-1.5 text-foreground'>
                                   <Layers className='h-3.5 w-3.5' />
                                 </div>
                                 <div className='min-w-0 flex-1'>

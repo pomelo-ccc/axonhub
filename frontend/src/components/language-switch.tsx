@@ -13,12 +13,10 @@ export function LanguageSwitch() {
   const { currentLanguage, changeLanguage, isUpdating } = useLanguage();
   const { t } = useTranslation();
 
-  const currentLanguageInfo = languages.find((lang) => lang.code === currentLanguage) || languages[0];
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='sm' className='h-8 w-8 px-0' disabled={isUpdating}>
+        <Button variant='outline' size='sm' className='h-8 w-8 rounded-full border-border/80 bg-card/80 px-0 shadow-none' disabled={isUpdating}>
           <IconLanguage className='h-4 w-4' />
           <span className='sr-only'>{t('language.toggle')}</span>
         </Button>

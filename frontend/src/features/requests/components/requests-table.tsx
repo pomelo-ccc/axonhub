@@ -207,9 +207,9 @@ export function RequestsTable({
         autoRefresh={autoRefresh}
         onAutoRefreshChange={onAutoRefreshChange}
       />
-      <div className='shadow-soft relative mt-4 flex-1 overflow-auto rounded-2xl border border-[var(--table-border)]'>
+      <div className='relative mt-4 flex-1 overflow-auto rounded-xl border border-[var(--table-border)] bg-[var(--table-background)]/70'>
         <div className='min-w-max'>
-          <Table data-testid='requests-table' className='border-separate border-spacing-0 rounded-2xl bg-[var(--table-background)]'>
+          <Table data-testid='requests-table' className='border-separate border-spacing-0 rounded-xl bg-transparent'>
           <TableHeader className='sticky top-0 z-20 bg-[var(--table-header)] shadow-sm'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className='group/row border-0'>

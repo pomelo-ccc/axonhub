@@ -121,7 +121,7 @@ function ApiKeysContent() {
   return (
     <div className='flex flex-1 flex-col'>
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ApiKeyTabKey)} className='w-full'>
-        <TabsList className='shadow-soft border-border bg-background grid w-full grid-cols-3 rounded-2xl border'>
+        <TabsList className='grid w-full grid-cols-3 rounded-xl border border-border/70 bg-muted/30 p-1'>
           <TabsTrigger value='all' data-value='all'>
             {t('apikeys.tabs.all')}
           </TabsTrigger>

@@ -71,9 +71,9 @@ export function InitializationForm({ className, ...props }: InitializationFormPr
           name='ownerFirstName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('initialization.form.ownerFirstName')}</FormLabel>
+              <FormLabel className='text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground'>{t('initialization.form.ownerFirstName')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('initialization.form.placeholders.ownerFirstName')} className='border-slate-300 !bg-white text-slate-800 transition-all duration-300 placeholder:text-slate-400 focus:border-slate-500 focus:!bg-white focus:ring-2 focus:ring-slate-200' {...field} />
+                <Input placeholder={t('initialization.form.placeholders.ownerFirstName')} className='h-11' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,9 +84,9 @@ export function InitializationForm({ className, ...props }: InitializationFormPr
           name='ownerLastName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('initialization.form.ownerLastName')}</FormLabel>
+              <FormLabel className='text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground'>{t('initialization.form.ownerLastName')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('initialization.form.placeholders.ownerLastName')} className='border-slate-300 !bg-white text-slate-800 transition-all duration-300 placeholder:text-slate-400 focus:border-slate-500 focus:!bg-white focus:ring-2 focus:ring-slate-200' {...field} />
+                <Input placeholder={t('initialization.form.placeholders.ownerLastName')} className='h-11' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,9 +97,9 @@ export function InitializationForm({ className, ...props }: InitializationFormPr
           name='ownerEmail'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('initialization.form.ownerEmail')}</FormLabel>
+              <FormLabel className='text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground'>{t('initialization.form.ownerEmail')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('initialization.form.placeholders.ownerEmail')} className='border-slate-300 !bg-white text-slate-800 transition-all duration-300 placeholder:text-slate-400 focus:border-slate-500 focus:!bg-white focus:ring-2 focus:ring-slate-200' {...field} />
+                <Input placeholder={t('initialization.form.placeholders.ownerEmail')} className='h-11' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -110,9 +110,9 @@ export function InitializationForm({ className, ...props }: InitializationFormPr
           name='ownerPassword'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('initialization.form.ownerPassword')}</FormLabel>
+              <FormLabel className='text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground'>{t('initialization.form.ownerPassword')}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder={t('initialization.form.placeholders.ownerPassword')} className='border-slate-300 bg-white text-slate-800 backdrop-blur-sm transition-all duration-300 placeholder:text-slate-400 focus:border-slate-500 focus:bg-white focus:ring-2 focus:ring-slate-200' {...field} />
+                <PasswordInput placeholder={t('initialization.form.placeholders.ownerPassword')} className='h-11' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -123,19 +123,15 @@ export function InitializationForm({ className, ...props }: InitializationFormPr
           name='brandName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('initialization.form.brandName')}</FormLabel>
+              <FormLabel className='text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground'>{t('initialization.form.brandName')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('initialization.form.placeholders.brandName')} className='border-slate-300 !bg-white text-slate-800 transition-all duration-300 placeholder:text-slate-400 focus:border-slate-500 focus:!bg-white focus:ring-2 focus:ring-slate-200' {...field} />
+                <Input placeholder={t('initialization.form.placeholders.brandName')} className='h-11' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button
-          type='submit'
-          className='mt-6 w-full rounded-lg bg-slate-800 px-6 py-3 font-medium text-white shadow-lg transition-all duration-300 hover:bg-slate-700 hover:shadow-xl focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50'
-          disabled={initializeSystemMutation.isPending}
-        >
+        <Button type='submit' className='mt-4 h-11 w-full' disabled={initializeSystemMutation.isPending}>
           {initializeSystemMutation.isPending ? t('initialization.form.submitting') : t('initialization.form.submit')}
         </Button>
       </form>

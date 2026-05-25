@@ -136,7 +136,7 @@ export default function ThreadDetailPage() {
 
   return (
     <div className='flex h-screen flex-col'>
-      <Header className='bg-background/95 supports-[backdrop-filter]:bg-background/60 w-full border-b backdrop-blur'>
+      <Header className='bg-background/95 supports-[backdrop-filter]:bg-background/70 w-full border-b border-border/70 backdrop-blur'>
         <div className='flex w-full items-center justify-between gap-2'>
           <div className='flex items-center gap-2 sm:gap-4 min-w-0 flex-1'>
             <Button variant='ghost' size='sm' onClick={handleBack} className='hover:bg-accent shrink-0'>
@@ -145,8 +145,8 @@ export default function ThreadDetailPage() {
             </Button>
             <Separator orientation='vertical' className='h-6 shrink-0 hidden sm:block' />
             <div className='flex items-center gap-2 sm:gap-3 min-w-0'>
-              <div className='bg-primary/10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg shrink-0'>
-                <Activity className='text-primary h-3.5 w-3.5 sm:h-4 sm:w-4' />
+              <div className='flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-muted/35 sm:h-8 sm:w-8'>
+                <Activity className='h-3.5 w-3.5 text-foreground sm:h-4 sm:w-4' />
               </div>
               <div className='min-w-0'>
                 <h1 className='text-sm sm:text-lg leading-none font-semibold truncate'>
@@ -171,29 +171,29 @@ export default function ThreadDetailPage() {
 
       <Main className='flex-1 overflow-hidden flex flex-col p-0'>
         {/* Top: Usage Metadata */}
-        <div className='px-4 sm:px-6 py-3 sm:py-4 border-b bg-background'>
+        <div className='border-b border-border/70 bg-background px-4 py-3 sm:px-6 sm:py-4'>
           <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4'>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.totalTokensLabel')}</p>
               <p className='text-base sm:text-lg font-semibold'>{(thread.usageMetadata?.totalTokens ?? 0).toLocaleString()}</p>
             </div>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.inputTokensLabel')}</p>
               <p className='text-base sm:text-lg font-semibold'>{(thread.usageMetadata?.totalInputTokens ?? 0).toLocaleString()}</p>
             </div>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.outputTokensLabel')}</p>
               <p className='text-base sm:text-lg font-semibold'>{(thread.usageMetadata?.totalOutputTokens ?? 0).toLocaleString()}</p>
             </div>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.cachedTokensLabel')}</p>
               <p className='text-base sm:text-lg font-semibold'>{(thread.usageMetadata?.totalCachedTokens ?? 0).toLocaleString()}</p>
             </div>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.cachedWriteTokensLabel')}</p>
               <p className='text-base sm:text-lg font-semibold'>{(thread.usageMetadata?.totalCachedWriteTokens ?? 0).toLocaleString()}</p>
             </div>
-            <div className='bg-muted/30 rounded-lg px-3 py-2'>
+            <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
               <p className='text-muted-foreground text-xs sm:text-sm'>{t('usageLogs.columns.totalCost')}</p>
               {thread.usageMetadata?.totalCost ? (
                 <p className='text-base sm:text-lg font-semibold'>

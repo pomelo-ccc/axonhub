@@ -41,8 +41,8 @@ export function TopProjects() {
     <div className='space-y-8'>
       {topProjects.map((project) => (
         <div key={project.projectId} className='flex items-center'>
-          <div className='bg-primary/10 flex h-9 w-9 items-center justify-center rounded-md'>
-            <FolderIcon className='text-primary h-5 w-5' />
+          <div className='flex h-9 w-9 items-center justify-center rounded-xl border border-border/70 bg-muted/35'>
+            <FolderIcon className='h-5 w-5 text-foreground' />
           </div>
           <div className='ml-4 space-y-1'>
             <p className='text-sm leading-none font-medium'>{project.projectName}</p>

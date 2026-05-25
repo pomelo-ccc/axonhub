@@ -343,7 +343,7 @@ export default function RequestDetailPage() {
 
   return (
     <div className='flex h-screen flex-col'>
-      <Header className='bg-background/95 supports-[backdrop-filter]:bg-background/60 border-b backdrop-blur'>
+      <Header className='border-b border-border/70 bg-background/95 supports-[backdrop-filter]:bg-background/70 backdrop-blur'>
         <div className='flex items-center space-x-4'>
           <Button variant='ghost' size='sm' onClick={handleBack} className='hover:bg-accent'>
             <ArrowLeft className='mr-2 h-4 w-4' />
@@ -351,8 +351,8 @@ export default function RequestDetailPage() {
           </Button>
           <Separator orientation='vertical' className='h-6' />
           <div className='flex items-center space-x-3'>
-            <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-lg'>
-              <FileText className='text-primary h-4 w-4' />
+            <div className='flex h-8 w-8 items-center justify-center rounded-xl border border-border/70 bg-muted/35'>
+              <FileText className='h-4 w-4 text-foreground' />
             </div>
             <div>
               <h1 className='text-lg leading-none font-semibold'>

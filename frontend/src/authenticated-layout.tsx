@@ -21,7 +21,7 @@ export function AuthenticatedLayout({ children }: Props) {
   useVersionCheck();
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen} className='h-screen flex-col overflow-hidden'>
+    <SidebarProvider defaultOpen={defaultOpen} className='min-h-screen flex-col overflow-hidden bg-background'>
       <AppHeader />
       <div className='flex flex-1 overflow-hidden'>
         <SkipToMain />
@@ -33,7 +33,7 @@ export function AuthenticatedLayout({ children }: Props) {
             'peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon)-1rem)]',
             'peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]',
             'sm:transition-[width] sm:duration-200 sm:ease-linear',
-            'flex min-h-0 min-w-0 flex-1 flex-col overflow-auto pt-14 has-[main.fixed-main]:overflow-hidden',
+            'bg-background flex min-h-0 min-w-0 flex-1 flex-col overflow-auto pt-14 has-[main.fixed-main]:overflow-hidden',
             'group-data-[scroll-locked=1]/body:h-full',
             'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh'
           )}

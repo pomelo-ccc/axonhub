@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'dark' | 'light' | 'system';
-type ColorScheme = 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'black' | 'cream' | 'claude' | 'starry';
+type ColorScheme = 'stone' | 'paper' | 'ink';
+
+const COLOR_SCHEMES: readonly ColorScheme[] = ['stone', 'paper', 'ink'] as const;
+
+function isColorScheme(value: string | null): value is ColorScheme {
+  return value !== null && COLOR_SCHEMES.includes(value as ColorScheme);
+}
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -20,7 +26,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   theme: 'system',
-  colorScheme: 'blue',
+  colorScheme: 'stone',
   setTheme: () => null,
   setColorScheme: () => null,
 };
@@ -30,15 +36,16 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
-  defaultColorScheme = 'claude',
+  defaultColorScheme = 'stone',
   storageKey = 'axonhub-ui-theme',
   colorSchemeStorageKey = 'axonhub-ui-color-scheme',
   ...props
 }: ThemeProviderProps) {
   const [theme, _setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
-  const [colorScheme, _setColorScheme] = useState<ColorScheme>(
-    () => (localStorage.getItem(colorSchemeStorageKey) as ColorScheme) || defaultColorScheme
-  );
+  const [colorScheme, _setColorScheme] = useState<ColorScheme>(() => {
+    const storedColorScheme = localStorage.getItem(colorSchemeStorageKey);
+    return isColorScheme(storedColorScheme) ? storedColorScheme : defaultColorScheme;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -46,19 +53,19 @@ export function ThemeProvider({
 
     const applyTheme = (theme: Theme, colorScheme: ColorScheme) => {
       // Remove existing theme and color scheme classes
-      root.classList.remove('light', 'dark', 'blue', 'green', 'purple', 'orange', 'red', 'black', 'cream', 'claude', 'starry');
+      root.classList.remove('light', 'dark', ...COLOR_SCHEMES);
 
       const systemTheme = mediaQuery.matches ? 'dark' : 'light';
       const effectiveTheme = theme === 'system' ? systemTheme : theme;
 
       // Add theme and color scheme classes with transition
-      root.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+      root.style.transition = 'background-color 0.22s ease, color 0.22s ease, border-color 0.22s ease';
       root.classList.add(effectiveTheme, colorScheme);
 
       // Remove transition after animation completes
       setTimeout(() => {
         root.style.transition = '';
-      }, 300);
+      }, 220);
     };
 
     const handleChange = () => {

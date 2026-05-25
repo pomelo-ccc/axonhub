@@ -506,7 +506,7 @@ const SupportedModelsCell = memo(({ row }: { row: Row<Channel> }) => {
         {models.length > 5 && (
           <Badge
             variant='secondary'
-            className='hover:bg-primary hover:text-primary-foreground cursor-pointer text-xs transition-colors'
+            className='cursor-pointer text-xs transition-colors hover:bg-muted hover:text-foreground'
             onClick={handleOpenModelsDialog}
             title={t('channels.actions.viewModels')}
           >

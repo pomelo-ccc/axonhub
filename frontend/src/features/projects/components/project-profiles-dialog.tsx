@@ -157,7 +157,7 @@ export function ProjectProfilesDialog({ open, onOpenChange, onSubmit, loading = 
                   <CardTitle className='text-base'>
                     {watchedProfiles[profileIndex]?.name || `Profile ${profileIndex + 1}`}
                     {watchedProfiles[profileIndex]?.name === activeProfile && (
-                      <span className='bg-primary/10 text-primary ml-2 rounded-full px-2 py-0.5 text-xs'>
+                      <span className='ml-2 rounded-full border border-border/70 bg-muted/35 px-2 py-0.5 text-xs text-foreground'>
                         {t('projects.profiles.activeProfile')}
                       </span>
                     )}

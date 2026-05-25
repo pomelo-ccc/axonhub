@@ -782,10 +782,10 @@ export function TraceFlatTimeline({ trace, onSelectSpan, selectedSpanId }: Trace
               variant='ghost'
               size='sm'
               onClick={handleToggleAll}
-              className='bg-primary/10 hover:bg-primary/20 h-8 w-8 rounded-lg p-0'
+              className='h-8 w-8 rounded-lg border border-border/70 bg-muted/25 p-0 hover:bg-muted/55'
               title={allExpanded ? t('traces.timeline.collapseAll') : t('traces.timeline.expandAll')}
             >
-              <ChevronsDownUp className={cn('text-primary h-4 w-4 transition-transform', !allExpanded && 'rotate-180')} />
+              <ChevronsDownUp className={cn('h-4 w-4 text-foreground transition-transform', !allExpanded && 'rotate-180')} />
             </Button>
           </div>
         </div>

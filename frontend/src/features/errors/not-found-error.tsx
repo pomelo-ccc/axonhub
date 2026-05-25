@@ -190,7 +190,7 @@ export default function NotFoundError() {
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start gap-3'>
-                      <div className='bg-primary/10 text-primary flex-shrink-0 rounded-lg p-2'>{page.icon}</div>
+                      <div className='flex-shrink-0 rounded-xl border border-border/70 bg-muted/35 p-2 text-foreground'>{page.icon}</div>
                       <div className='min-w-0 flex-1'>
                         <h4 className='text-foreground mb-1 truncate font-semibold'>{page.title}</h4>
                         <p className='text-muted-foreground line-clamp-2 text-sm'>{page.description}</p>

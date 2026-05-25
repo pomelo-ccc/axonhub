@@ -109,8 +109,8 @@ const FetchedModelItem = memo(({
     className={`flex items-center gap-2 rounded-md p-2 text-sm transition-colors ${
       isAdded && !isSelected
         ? 'bg-muted/50 text-muted-foreground'
-        : isSelected
-          ? 'bg-primary/10 border-primary/30 border'
+      : isSelected
+          ? 'border border-border/70 bg-muted/35 text-foreground'
           : 'hover:bg-accent cursor-pointer'
     }`}
   >

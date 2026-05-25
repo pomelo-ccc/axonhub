@@ -69,16 +69,16 @@ export function ProjectSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className='hover:bg-accent/50 inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm leading-none transition-colors'>
-          <span className='text-sm leading-none font-medium'>{displayName}</span>
-          <ChevronsUpDown className='text-muted-foreground size-3' />
+        <button className='inline-flex h-9 items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3.5 text-sm leading-none shadow-none transition-[background-color,border-color] hover:border-ring/20 hover:bg-accent/70'>
+          <span className='truncate text-sm leading-none font-medium'>{displayName}</span>
+          <ChevronsUpDown className='text-muted-foreground size-3.5' />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='min-w-56 rounded-lg' align='start' sideOffset={4}>
         <DropdownMenuLabel className='text-muted-foreground text-xs'>{t('sidebar.projectSwitcher.projects')}</DropdownMenuLabel>
         {myProjects.map((project) => (
           <DropdownMenuItem key={project.id} onClick={() => handleProjectChange(project.id)} className='gap-2 p-2'>
-            <div className='flex size-6 items-center justify-center rounded-sm border'>
+            <div className='flex size-7 items-center justify-center rounded-md border border-border/80 bg-background/70'>
               <FolderKanban className='size-4 shrink-0' />
             </div>
             <div className='flex flex-col'>
