@@ -44,12 +44,9 @@ env:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'push' || inputs.action == 'deploy' }}
-    name: Build deploy artifact
+    if: ${{ github.event_name == 'push' }}
+    name: Build check
     runs-on: ubuntu-latest
-    outputs:
-      artifact_id: ${{ steps.upload-artifact.outputs.artifact-id }}
-      archive_sha256: ${{ steps.package-artifact.outputs.archive_sha256 }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -89,27 +86,10 @@ jobs:
       - name: Build linux amd64 backend
         run: GOOS=linux GOARCH=amd64 make build-backend
 
-      - name: Package deploy artifact
-        id: package-artifact
-        run: |
-          mkdir -p dist/deploy
-          gzip -c ./axonhub > dist/deploy/axonhub.gz
-          sha256sum dist/deploy/axonhub.gz > dist/deploy/axonhub.gz.sha256
-          printf 'archive_sha256=%s\n' "$(cut -d ' ' -f1 dist/deploy/axonhub.gz.sha256)" >> "$GITHUB_OUTPUT"
-
-      - name: Upload deploy artifact
-        id: upload-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: axonhub-linux-amd64
-          path: dist/deploy/*
-          if-no-files-found: error
-
   deploy:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.action == 'deploy' }}
     name: Deploy to production
     runs-on: ubuntu-latest
-    needs: build
     environment: production
     concurrency:
       group: axonhub-production
@@ -128,6 +108,12 @@ jobs:
       AXONHUB_PUBLIC_HEALTHCHECK_URL: ${{ vars.AXONHUB_PUBLIC_HEALTHCHECK_URL }}
       AXONHUB_SECONDARY_HEALTHCHECK_URL: ${{ vars.AXONHUB_SECONDARY_HEALTHCHECK_URL }}
       AXONHUB_SECONDARY_HEALTHCHECK_STRICT: ${{ vars.AXONHUB_SECONDARY_HEALTHCHECK_STRICT }}
+      AXONHUB_DEPLOY_SOURCE_REPO_URL: ${{ vars.AXONHUB_DEPLOY_SOURCE_REPO_URL }}
+      AXONHUB_DEPLOY_SOURCE_DIR: ${{ vars.AXONHUB_DEPLOY_SOURCE_DIR }}
+      AXONHUB_DEPLOY_WORKTREE_DIR: ${{ vars.AXONHUB_DEPLOY_WORKTREE_DIR }}
+      AXONHUB_DEPLOY_BASE_PATH: ${{ vars.AXONHUB_DEPLOY_BASE_PATH }}
+      AXONHUB_DEPLOY_GOPROXY: ${{ vars.AXONHUB_DEPLOY_GOPROXY }}
+      AXONHUB_DEPLOY_NPM_REGISTRY: ${{ vars.AXONHUB_DEPLOY_NPM_REGISTRY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -150,35 +136,12 @@ jobs:
 
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Resolve artifact download URL
-        id: artifact-url
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          artifact_api_url="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ needs.build.outputs.artifact_id }}/zip"
-          artifact_download_url="$(
-            curl -fsSI \
-              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-              -H "Accept: application/vnd.github+json" \
-              "${artifact_api_url}" |
-            awk 'BEGIN { IGNORECASE = 1 } /^location: / { sub(/\r$/, "", $2); print $2 }'
-          )"
-
-          if [[ -z "${artifact_download_url}" ]]; then
-            echo "Unable to resolve artifact download URL." >&2
-            exit 1
-          fi
-
-          printf 'artifact_download_url=%s\n' "${artifact_download_url}" >> "$GITHUB_OUTPUT"
-
-      - name: Deploy artifact
+      - name: Deploy from source
         run: |
           export AXONHUB_DEPLOY_SSH_IDENTITY_FILE="$HOME/.ssh/id_ed25519"
           export AXONHUB_DEPLOY_KNOWN_HOSTS_FILE="$HOME/.ssh/known_hosts"
-          export AXONHUB_DEPLOY_REMOTE_ARCHIVE_URL="${{ steps.artifact-url.outputs.artifact_download_url }}"
-          export AXONHUB_DEPLOY_REMOTE_ARCHIVE_KIND="zip"
-          export AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="${{ needs.build.outputs.archive_sha256 }}"
-          ./scripts/deploy/deploy-production.sh
+          export AXONHUB_DEPLOY_SOURCE_REF="${{ inputs.ref != '' && inputs.ref || github.sha }}"
+          ./scripts/deploy/deploy-from-source.sh
 
   rollback:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.action == 'rollback' }}

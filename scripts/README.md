@@ -49,6 +49,24 @@ AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="..." \
 - `workflow_dispatch` 手动触发时可执行 `deploy` 或 `rollback`
 - `deploy` 会让服务器直接从 GitHub 下载构建产物，避免 Runner 到生产机的大文件慢链路
 
+#### `deploy/bootstrap-build-host.sh`
+在生产机上一次性安装 AxonHub 源码构建所需的 Go、Node.js 和 pnpm。
+
+```bash
+./scripts/deploy/bootstrap-build-host.sh
+```
+
+#### `deploy/deploy-from-source.sh`
+让生产机直接拉取指定 Git ref 的源码，在服务器本机完成前端和后端构建，然后发布并做健康检查。
+
+```bash
+AXONHUB_DEPLOY_SOURCE_REF=<sha-or-branch> ./scripts/deploy/deploy-from-source.sh
+```
+
+新的推荐工作流：
+- `push` 到 `unstable`、`development`、`codex/**` 时只做 GitHub 构建校验
+- `workflow_dispatch` 执行 `deploy` 时，服务器直接拉源码并本机编译，避免下载大二进制
+
 必需的 GitHub Secrets：
 - `AXONHUB_DEPLOY_HOST`
 - `AXONHUB_DEPLOY_SSH_KEY`
