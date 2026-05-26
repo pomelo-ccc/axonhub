@@ -113,6 +113,7 @@ jobs:
       AXONHUB_DEPLOY_BASE_PATH: ${{ vars.AXONHUB_DEPLOY_BASE_PATH }}
       AXONHUB_DEPLOY_GOPROXY: ${{ vars.AXONHUB_DEPLOY_GOPROXY }}
       AXONHUB_DEPLOY_NPM_REGISTRY: ${{ vars.AXONHUB_DEPLOY_NPM_REGISTRY }}
+      AXONHUB_DEPLOY_NODE_OPTIONS: ${{ vars.AXONHUB_DEPLOY_NODE_OPTIONS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

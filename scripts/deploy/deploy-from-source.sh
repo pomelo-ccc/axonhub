@@ -20,6 +20,7 @@ deploy_build_root="${AXONHUB_DEPLOY_BUILD_ROOT:-/root/axonhub-builds/source-buil
 deploy_base_path="${AXONHUB_DEPLOY_BASE_PATH:-/api/}"
 deploy_go_proxy="${AXONHUB_DEPLOY_GOPROXY:-https://goproxy.cn,direct}"
 deploy_npm_registry="${AXONHUB_DEPLOY_NPM_REGISTRY:-https://registry.npmmirror.com}"
+deploy_node_options="${AXONHUB_DEPLOY_NODE_OPTIONS:---max-old-space-size=3072}"
 
 deploy_ref="${1:-${AXONHUB_DEPLOY_SOURCE_REF:-${GITHUB_SHA:-}}}"
 if [[ -z "${deploy_ref}" ]]; then
@@ -60,7 +61,7 @@ rollback_on_failure() {
 trap 'rollback_on_failure $?' EXIT
 
 printf 'Building and deploying ref %s on %s...\n' "${deploy_ref}" "${deploy_host}"
-remote_backup_path="$(
+if ! remote_backup_path="$(
   ssh "${ssh_opts[@]}" "${deploy_user}@${deploy_host}" bash -s -- \
     "${deploy_source_archive_base_url}" \
     "${deploy_ref}" \
@@ -71,7 +72,8 @@ remote_backup_path="$(
     "${deployment_id}" \
     "${deploy_base_path}" \
     "${deploy_go_proxy}" \
-    "${deploy_npm_registry}" <<'REMOTE'
+    "${deploy_npm_registry}" \
+    "${deploy_node_options}" <<'REMOTE'
 set -euo pipefail
 
 source_archive_base_url="$1"
@@ -84,6 +86,7 @@ deployment_id="$7"
 base_path="$8"
 go_proxy="${9}"
 npm_registry="${10}"
+node_options="${11}"
 
 export PATH="/usr/local/go/bin:/usr/local/bin:${PATH}"
 export GOPROXY="${go_proxy}"
@@ -91,6 +94,8 @@ export PNPM_HOME="${PNPM_HOME:-/root/.local/share/pnpm}"
 export COREPACK_HOME="${COREPACK_HOME:-/root/.cache/corepack}"
 export PATH="${PNPM_HOME}:${PATH}"
 export NPM_CONFIG_REGISTRY="${npm_registry}"
+export CI=1
+export NODE_OPTIONS="${node_options}"
 
 if ! command -v go >/dev/null || ! command -v node >/dev/null || ! command -v pnpm >/dev/null; then
   echo "Build toolchain missing on server. Run scripts/deploy/bootstrap-build-host.sh first." >&2
@@ -109,6 +114,7 @@ cleanup() {
 
 trap cleanup EXIT
 
+printf 'Downloading source archive for %s...\n' "${source_ref}" >&2
 curl \
   --fail \
   --location \
@@ -122,9 +128,14 @@ curl \
 mkdir -p "${build_path}"
 tar -xzf "${archive_path}" --strip-components=1 -C "${build_path}"
 
-(cd "${build_path}/frontend" && pnpm install --frozen-lockfile --prefer-offline)
-(cd "${build_path}" && VITE_BASE_PATH="${base_path}" make build-frontend)
-(cd "${build_path}" && GOOS=linux GOARCH=amd64 make build-backend)
+printf 'Installing frontend dependencies...\n' >&2
+(cd "${build_path}/frontend" && pnpm install --frozen-lockfile --prefer-offline --reporter=append-only) >&2
+
+printf 'Building frontend with NODE_OPTIONS=%s...\n' "${NODE_OPTIONS}" >&2
+(cd "${build_path}" && VITE_BASE_PATH="${base_path}" make build-frontend) >&2
+
+printf 'Building backend...\n' >&2
+(cd "${build_path}" && GOOS=linux GOARCH=amd64 make build-backend) >&2
 
 backup_path="${backup_dir%/}/axonhub.before_${deployment_id}"
 cp "${binary_path}" "${backup_path}"
@@ -133,7 +144,12 @@ systemctl restart "${service_name}"
 
 printf '%s\n' "${backup_path}"
 REMOTE
-)"
+  )"; then
+  remote_backup_path=""
+  exit 1
+fi
+
+remote_backup_path="$(printf '%s' "${remote_backup_path}" | tr -d '\r\n')"
 
 printf 'New backup created at %s\n' "${remote_backup_path}"
 
