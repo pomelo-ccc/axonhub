@@ -17,6 +17,8 @@ ssh_opts=(
   -p "${deploy_port}"
   -o BatchMode=yes
   -o StrictHostKeyChecking=yes
+  -o ServerAliveInterval=30
+  -o ServerAliveCountMax=20
 )
 
 if [[ -n "${deploy_identity_file}" ]]; then
