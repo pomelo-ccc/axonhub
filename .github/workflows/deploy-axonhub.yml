@@ -98,6 +98,7 @@ jobs:
           printf 'archive_sha256=%s\n' "$(cut -d ' ' -f1 dist/deploy/axonhub.gz.sha256)" >> "$GITHUB_OUTPUT"
 
       - name: Upload deploy artifact
+        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: axonhub-linux-amd64
