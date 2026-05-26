@@ -142,16 +142,17 @@ else
   esac
 
   local_sha="${remote_archive_sha}"
+  remote_archive_url_b64="$(printf '%s' "${remote_archive_url}" | base64 | tr -d '\n')"
 
   printf 'Downloading deploy artifact on %s from GitHub...\n' "${deploy_host}"
   ssh "${ssh_opts[@]}" "${deploy_user}@${deploy_host}" bash -s -- \
-    "${remote_archive_url}" \
+    "${remote_archive_url_b64}" \
     "${remote_bundle_path}" \
     "${remote_archive_kind}" \
     "${remote_extract_dir}" <<'REMOTE_DOWNLOAD'
 set -euo pipefail
 
-archive_url="$1"
+archive_url="$(printf '%s' "$1" | base64 -d)"
 bundle_path="$2"
 archive_kind="$3"
 extract_dir="$4"
