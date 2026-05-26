@@ -36,6 +36,8 @@ ssh_opts=(
   -p "${deploy_port}"
   -o BatchMode=yes
   -o StrictHostKeyChecking=yes
+  -o ServerAliveInterval=30
+  -o ServerAliveCountMax=20
 )
 
 if [[ -n "${deploy_identity_file}" ]]; then
@@ -101,7 +103,7 @@ if [[ -n "${archive_path}" ]]; then
   local_sha="$(sha256sum "${archive_path}" | awk '{print $1}')"
 
   printf 'Uploading %s to %s:%s\n' "${archive_path}" "${deploy_host}" "${remote_bundle_path}"
-  rsync_ssh_cmd="ssh -p ${deploy_port} -o BatchMode=yes -o StrictHostKeyChecking=yes"
+  rsync_ssh_cmd="ssh -p ${deploy_port} -o BatchMode=yes -o StrictHostKeyChecking=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=20"
   if [[ -n "${deploy_identity_file}" ]]; then
     rsync_ssh_cmd="${rsync_ssh_cmd} -i ${deploy_identity_file}"
   fi
