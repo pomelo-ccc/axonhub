@@ -7,10 +7,19 @@
 ### 生产部署脚本
 
 #### `deploy/deploy-production.sh`
-将 GitHub Actions 生成的 `axonhub.gz` 上传到服务器，自动备份当前二进制、替换、重启服务，并在健康检查失败时自动回滚。
+部署新的 AxonHub 二进制到服务器，自动备份当前二进制、替换、重启服务，并在健康检查失败时自动回滚。支持两种模式：
+
+- 本地归档推送：将本地的 `axonhub.gz` 上传到服务器
+- 远程归档拉取：由服务器直接下载 GitHub Actions 生成的构建产物，避免大文件跨境 SSH 直传
 
 ```bash
 ./scripts/deploy/deploy-production.sh /path/to/axonhub.gz
+
+# 远程拉取模式
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_URL="https://..." \
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_KIND="zip" \
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="..." \
+./scripts/deploy/deploy-production.sh
 ```
 
 #### `deploy/rollback-production.sh`
@@ -38,6 +47,7 @@
 默认行为：
 - `push` 到 `unstable`、`development`、`codex/**` 时只做构建校验
 - `workflow_dispatch` 手动触发时可执行 `deploy` 或 `rollback`
+- `deploy` 会让服务器直接从 GitHub 下载构建产物，避免 Runner 到生产机的大文件慢链路
 
 必需的 GitHub Secrets：
 - `AXONHUB_DEPLOY_HOST`
