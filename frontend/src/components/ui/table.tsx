@@ -2,12 +2,12 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(({ className, ...props }, ref) => (
-  <table ref={ref} data-slot='table' className={cn('w-full caption-bottom text-sm', className)} {...props} />
+  <table ref={ref} data-slot='table' className={cn('w-full caption-bottom text-sm text-foreground/95', className)} {...props} />
 ));
 Table.displayName = 'Table';
 
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
-  return <thead data-slot='table-header' className={cn('[&_tr]:border-b', className)} {...props} />;
+  return <thead data-slot='table-header' className={cn('bg-muted/42 [&_tr]:border-b [&_tr]:border-border/80', className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
@@ -15,14 +15,14 @@ function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<'tfoot'>) {
-  return <tfoot data-slot='table-footer' className={cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)} {...props} />;
+  return <tfoot data-slot='table-footer' className={cn('bg-muted/42 border-t border-border/80 font-medium [&>tr]:last:border-b-0', className)} {...props} />;
 }
 
 const TableRow = React.forwardRef<HTMLTableRowElement, React.ComponentProps<'tr'>>(({ className, ...props }, ref) => (
   <tr
     ref={ref}
     data-slot='table-row'
-    className={cn('hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors', className)}
+    className={cn('border-b border-border/80 transition-colors hover:bg-accent/65 data-[state=selected]:bg-accent/80', className)}
     {...props}
   />
 ));
@@ -33,7 +33,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
     <th
       data-slot='table-head'
       className={cn(
-        'text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'text-muted-foreground h-10 px-3 text-left align-middle text-[11px] font-semibold whitespace-nowrap uppercase tracking-[0.12em] [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
         className
       )}
       {...props}
@@ -45,7 +45,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
   return (
     <td
       data-slot='table-cell'
-      className={cn('p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]', className)}
+      className={cn('px-3 py-2.5 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]', className)}
       {...props}
     />
   );

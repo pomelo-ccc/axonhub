@@ -63,7 +63,7 @@ export default function ProfileForm() {
       firstName: currentUser?.firstName || '',
       lastName: currentUser?.lastName || '',
       email: currentUser?.email || '',
-      preferLanguage: currentUser?.preferLanguage || 'en',
+      preferLanguage: currentUser?.preferLanguage || 'zh',
       avatar: currentUser?.avatar || '',
     },
     mode: 'onChange',

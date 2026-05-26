@@ -62,16 +62,18 @@ export function NavGroup({ title, items }: NavGroup) {
   );
 }
 
-const NavBadge = ({ children }: { children: ReactNode }) => <Badge className='rounded-full px-1 py-0 text-xs'>{children}</Badge>;
+const NavBadge = ({ children }: { children: ReactNode }) => (
+  <Badge className='rounded-full border border-border/80 bg-secondary px-1.5 py-0 text-[10px] font-medium text-muted-foreground shadow-none'>{children}</Badge>
+);
 
 const SidebarMenuLink = ({ item, href }: { item: NavLink; href: string }) => {
   const { setOpenMobile } = useSidebar();
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title} className='h-12 rounded-2xl transition-all'>
+      <SidebarMenuButton asChild isActive={checkIsActive(href, item)} tooltip={item.title} className='h-10 rounded-md transition-all'>
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
-          {item.icon && <item.icon className='text-xl' />}
+          {item.icon && <item.icon className='size-[1.125rem]' />}
           <span>{item.title}</span>
           {item.badge && <NavBadge>{item.badge}</NavBadge>}
         </Link>
@@ -89,8 +91,8 @@ const SidebarMenuCollapsible = ({ item, href }: { item: NavCollapsible; href: st
     <Collapsible asChild defaultOpen={checkIsActive(href, item, true)} className='group/collapsible'>
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title} className='h-12 rounded-2xl transition-all'>
-            {item.icon && <item.icon className='text-xl' />}
+          <SidebarMenuButton tooltip={item.title} className='h-10 rounded-md transition-all'>
+            {item.icon && <item.icon className='size-[1.125rem]' />}
             <span>{item.title}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
@@ -124,8 +126,8 @@ const SidebarMenuCollapsedDropdown = ({ item, href }: { item: NavCollapsible; hr
     <SidebarMenuItem>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <SidebarMenuButton tooltip={item.title} isActive={checkIsActive(href, item)} className='h-12 rounded-2xl transition-all'>
-            {item.icon && <item.icon className='text-xl' />}
+          <SidebarMenuButton tooltip={item.title} isActive={checkIsActive(href, item)} className='h-10 rounded-md transition-all'>
+            {item.icon && <item.icon className='size-[1.125rem]' />}
             <span>{item.title}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
             <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />

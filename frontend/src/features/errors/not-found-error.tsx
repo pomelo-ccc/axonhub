@@ -138,13 +138,13 @@ export default function NotFoundError() {
   };
 
   return (
-    <div className='from-background via-background to-muted/20 min-h-svh bg-gradient-to-br'>
+    <div className='min-h-svh bg-[radial-gradient(circle_at_top,rgba(185,162,126,0.12),transparent_35%),linear-gradient(180deg,var(--background),color-mix(in_oklab,var(--background)_88%,var(--muted)))]'>
       <div className='container mx-auto px-4 py-16'>
         <div className='mx-auto max-w-4xl'>
           {/* Header Section */}
           <div className='mb-12 text-center'>
             <div className='relative'>
-              <h1 className='text-primary/10 text-[8rem] leading-none font-bold select-none md:text-[12rem]'>404</h1>
+              <h1 className='text-[8rem] leading-none font-bold select-none text-foreground/6 md:text-[12rem]'>404</h1>
               <div className='absolute inset-0 flex items-center justify-center'>
                 <div className='text-center'>
                   <h2 className='text-foreground mb-4 text-3xl font-bold md:text-4xl'>Page Not Found</h2>
@@ -157,10 +157,10 @@ export default function NotFoundError() {
           </div>
 
           {/* Search Section */}
-          <Card className='border-primary/20 mb-8 border-2 border-dashed'>
+          <Card className='mb-8 border border-border/70 bg-card/92 shadow-none'>
             <CardContent className='p-6'>
               <div className='mb-4 flex items-center gap-3'>
-                <IconSearch className='text-primary h-5 w-5' />
+                <IconSearch className='h-5 w-5 text-foreground' />
                 <h3 className='text-lg font-semibold'>Find what you're looking for</h3>
               </div>
               <div className='relative'>
@@ -178,19 +178,19 @@ export default function NotFoundError() {
           {/* Suggested Pages */}
           <div className='mb-8'>
             <h3 className='mb-6 flex items-center gap-2 text-xl font-semibold'>
-              <IconExternalLink className='text-primary h-5 w-5' />
+              <IconExternalLink className='h-5 w-5 text-foreground' />
               {searchQuery ? 'Search Results' : 'Suggested Pages'}
             </h3>
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               {smartSuggestions.map((page) => (
                 <Card
                   key={page.path}
-                  className='hover:border-primary/50 cursor-pointer border transition-all duration-200 hover:scale-[1.02] hover:shadow-lg'
+                  className='cursor-pointer border border-border/70 bg-card/92 transition-[border-color,background-color,transform] duration-200 hover:border-border hover:bg-card hover:-translate-y-0.5'
                   onClick={() => handlePageNavigation(page.path)}
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start gap-3'>
-                      <div className='bg-primary/10 text-primary flex-shrink-0 rounded-lg p-2'>{page.icon}</div>
+                      <div className='flex-shrink-0 rounded-xl border border-border/70 bg-muted/35 p-2 text-foreground'>{page.icon}</div>
                       <div className='min-w-0 flex-1'>
                         <h4 className='text-foreground mb-1 truncate font-semibold'>{page.title}</h4>
                         <p className='text-muted-foreground line-clamp-2 text-sm'>{page.description}</p>
@@ -217,7 +217,7 @@ export default function NotFoundError() {
           {/* Additional Help */}
           <div className='mt-12 text-center'>
             <p className='text-muted-foreground mb-4 text-sm'>Still can't find what you're looking for?</p>
-            <Button variant='ghost' onClick={() => navigate({ to: '/help-center' })} className='text-primary hover:text-primary/80'>
+            <Button variant='ghost' onClick={() => navigate({ to: '/help-center' })} className='text-foreground hover:bg-muted/40'>
               Visit Help Center →
             </Button>
           </div>

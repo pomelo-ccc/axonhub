@@ -8,6 +8,7 @@ import { useAuthStore, setTokenToStorage, removeTokenFromStorage } from '@/store
 import { AuthUser } from '@/stores/authStore';
 import { authApi } from '@/lib/api-client';
 import i18n from '@/lib/i18n';
+import { toAppPath } from '@/lib/app-base';
 
 export interface SignInInput {
   email: string;
@@ -34,7 +35,7 @@ export function useMe(enabled = true) {
   // Update auth store when data changes
   useEffect(() => {
     if (query.data) {
-      const userLanguage = query.data.preferLanguage || 'en';
+      const userLanguage = query.data.preferLanguage || 'zh';
 
       setUser(query.data);
 
@@ -60,7 +61,7 @@ export function useSignIn() {
       // Store token in localStorage
       setTokenToStorage(data.token);
 
-      const userLanguage = data.user.preferLanguage || 'en';
+      const userLanguage = data.user.preferLanguage || 'zh';
 
       // Update auth store
       setAccessToken(data.token);
@@ -123,7 +124,7 @@ export function useOIDCAuthorize() {
     },
     onSuccess: (response) => {
       if (response && response.data && response.data.url) {
-        window.location.href = response.data.url;
+        window.location.href = toAppPath(response.data.url);
       } else {
         toast.error('Invalid authorization URL received');
       }
@@ -149,7 +150,7 @@ export function useOIDCExchange() {
       // Store token in localStorage
       setTokenToStorage(data.token);
 
-      const userLanguage = data.user.preferLanguage || 'en';
+      const userLanguage = data.user.preferLanguage || 'zh';
 
       // Update auth store
       setAccessToken(data.token);

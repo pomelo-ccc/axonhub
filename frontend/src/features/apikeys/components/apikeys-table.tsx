@@ -181,8 +181,8 @@ export function ApiKeysTable({
   return (
     <div className='flex flex-1 flex-col'>
       <DataTableToolbar table={table} dateRange={dateRange} onDateRangeChange={onDateRangeChange} onResetFilters={onResetFilters} />
-      <div className='shadow-soft relative mt-4 flex-1 overflow-auto rounded-2xl border border-[var(--table-border)]'>
-        <Table className='border-separate border-spacing-0 rounded-2xl bg-[var(--table-background)]'>
+      <div className='relative mt-4 flex-1 overflow-auto rounded-xl border border-[var(--table-border)] bg-[var(--table-background)]/70'>
+        <Table className='border-separate border-spacing-0 rounded-xl bg-transparent'>
           <TableHeader className='sticky top-0 z-20 bg-[var(--table-header)] shadow-sm'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className='group/row border-0'>
@@ -247,7 +247,7 @@ export function ApiKeysTable({
               <IconX className='h-4 w-4' />
             </Button>
             <div className='flex items-center gap-1.5 px-2'>
-              <span className='bg-primary text-primary-foreground flex h-6 min-w-6 items-center justify-center rounded px-1.5 text-xs font-medium'>
+              <span className='flex h-6 min-w-6 items-center justify-center rounded-md border border-border/70 bg-background/85 px-1.5 text-xs font-medium text-foreground'>
                 {selectedCount}
               </span>
               <span className='text-muted-foreground text-sm'>{t('common.selected')}</span>

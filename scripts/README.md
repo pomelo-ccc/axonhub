@@ -4,6 +4,98 @@
 
 ## 📁 脚本列表
 
+### 生产部署脚本
+
+#### `deploy/deploy-production.sh`
+部署新的 AxonHub 二进制到服务器，自动备份当前二进制、替换、重启服务，并在健康检查失败时自动回滚。支持两种模式：
+
+- 本地归档推送：将本地的 `axonhub.gz` 上传到服务器
+- 远程归档拉取：由服务器直接下载 GitHub Actions 生成的构建产物，避免大文件跨境 SSH 直传
+
+```bash
+./scripts/deploy/deploy-production.sh /path/to/axonhub.gz
+
+# 远程拉取模式
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_URL="https://..." \
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_KIND="zip" \
+AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="..." \
+./scripts/deploy/deploy-production.sh
+```
+
+#### `deploy/rollback-production.sh`
+手动回滚到最近一次备份，或回滚到指定备份文件。
+
+```bash
+./scripts/deploy/rollback-production.sh
+./scripts/deploy/rollback-production.sh /root/axonhub-backups/axonhub.before_20260526093000
+```
+
+#### `deploy/healthcheck.sh`
+执行部署后的服务状态检查，默认检查：
+
+- 服务器本地：`http://127.0.0.1:8090/admin/system/status`
+- 公网入口：`http://124.221.109.50/api/`
+
+```bash
+./scripts/deploy/healthcheck.sh
+```
+
+#### GitHub Actions 工作流
+
+工作流文件：`.github/workflows/deploy-axonhub.yml`
+
+默认行为：
+- `push` 到 `unstable` 时，先做构建校验，再自动部署到服务器
+- `push` 到 `development`、`codex/**` 时只做构建校验
+- `workflow_dispatch` 手动触发时可执行 `deploy` 或 `rollback`
+- 自动部署和手动 `deploy` 都会让服务器直接拉源码并本机编译，避免 Runner 到生产机的大文件慢链路
+
+#### `deploy/bootstrap-build-host.sh`
+在生产机上一次性安装 AxonHub 源码构建所需的 Go、Node.js 和 pnpm。默认还会补一个 `2G` 的 `/swapfile`，避免 `vite build` 在 `2C4G` 机器上因为 Node 堆内存不足而中断；如不需要，可传 `AXONHUB_DEPLOY_SWAP_SIZE=0` 关闭。
+
+```bash
+./scripts/deploy/bootstrap-build-host.sh
+```
+
+#### `deploy/deploy-from-source.sh`
+让生产机直接拉取指定 commit 的源码包，在服务器本机完成前端和后端构建，然后发布并做健康检查。
+
+```bash
+AXONHUB_DEPLOY_SOURCE_REF=<sha-or-branch> ./scripts/deploy/deploy-from-source.sh
+```
+
+常用可选变量：
+- `AXONHUB_DEPLOY_NODE_OPTIONS`：控制前端构建时的 Node 堆上限，默认 `--max-old-space-size=3072`
+- `AXONHUB_DEPLOY_GOPROXY`：Go 依赖代理
+- `AXONHUB_DEPLOY_NPM_REGISTRY`：pnpm/npm registry
+
+新的推荐工作流：
+- `push` 到 `unstable` 时自动部署到服务器
+- `push` 到 `development`、`codex/**` 时只做 GitHub 构建校验
+- `workflow_dispatch` 执行 `deploy` 时，服务器直接拉源码并本机编译，避免下载大二进制
+- 部署脚本会把远端构建日志输出到 stderr，只把最终备份路径回传给回滚逻辑，避免失败时误把日志当成回滚目标
+
+必需的 GitHub Secrets：
+- `AXONHUB_DEPLOY_HOST`
+- `AXONHUB_DEPLOY_SSH_KEY`
+
+可选的 GitHub Secrets：
+- `AXONHUB_DEPLOY_KNOWN_HOSTS`
+
+可选的 GitHub Variables：
+- `AXONHUB_DEPLOY_USER`
+- `AXONHUB_DEPLOY_PORT`
+- `AXONHUB_DEPLOY_SSH_IDENTITY_FILE`
+- `AXONHUB_DEPLOY_KNOWN_HOSTS_FILE`
+- `AXONHUB_DEPLOY_SERVICE`
+- `AXONHUB_DEPLOY_BINARY_PATH`
+- `AXONHUB_DEPLOY_BACKUP_DIR`
+- `AXONHUB_DEPLOY_TMP_DIR`
+- `AXONHUB_LOCAL_HEALTHCHECK_URL`
+- `AXONHUB_PUBLIC_HEALTHCHECK_URL`
+- `AXONHUB_SECONDARY_HEALTHCHECK_URL`
+- `AXONHUB_SECONDARY_HEALTHCHECK_STRICT`
+
 ### E2E 测试脚本
 
 #### `e2e/e2e-test.sh`

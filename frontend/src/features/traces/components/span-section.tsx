@@ -30,7 +30,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
           <div className='space-y-3'>
             <div>
               <p className='text-muted-foreground text-xs tracking-wide uppercase'>{t('traces.detail.promptLabel')}</p>
-              <pre className='bg-muted/40 mt-2 max-h-160 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap'>{query.text}</pre>
+              <pre className='mt-2 max-h-160 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3 text-sm whitespace-pre-wrap'>{query.text}</pre>
             </div>
           </div>
         ),
@@ -40,7 +40,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
     if (text?.text) {
       sections.push({
         title: t('traces.detail.textOutput'),
-        content: <pre className='bg-muted/40 max-h-160 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap'>{text.text}</pre>,
+        content: <pre className='max-h-160 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3 text-sm whitespace-pre-wrap'>{text.text}</pre>,
       });
     }
 
@@ -48,7 +48,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
       sections.push({
         title: t('traces.detail.thinking'),
         content: (
-          <pre className='bg-muted/30 max-h-160 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap italic'>{thinking.thinking}</pre>
+          <pre className='max-h-160 overflow-auto rounded-xl border border-border/60 bg-muted/15 p-3 text-sm italic whitespace-pre-wrap'>{thinking.thinking}</pre>
         ),
       });
     }
@@ -58,18 +58,18 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
         title: t('traces.detail.functionCall'),
         content: (
           <div className='space-y-3'>
-            <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+            <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
               <span className='text-muted-foreground'>{t('traces.detail.nameLabel')}</span>
               <span className='font-medium'>{toolUse.name}</span>
             </div>
             {toolUse.type && (
-              <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+              <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
                 <span className='text-muted-foreground'>{t('traces.detail.typeLabel')}</span>
                 <span className='font-mono text-xs'>{toolUse.type}</span>
               </div>
             )}
             {toolUse.id && (
-              <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+              <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
                 <span className='text-muted-foreground'>{t('traces.detail.idLabel')}</span>
                 <span className='font-mono text-xs'>{toolUse.id}</span>
               </div>
@@ -77,7 +77,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
             {toolUse.arguments && (
               <div>
                 <p className='text-muted-foreground text-xs tracking-wide uppercase'>{t('traces.detail.argumentsLabel')}</p>
-                <div className='bg-muted/40 mt-2 max-h-80 overflow-auto rounded-lg p-3'>
+                <div className='mt-2 max-h-80 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3'>
                   <JsonViewer
                     data={(() => {
                       try {
@@ -109,7 +109,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
               </Badge>
             )}
             {toolResult.text && (
-              <pre className='bg-muted/40 max-h-80 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap'>{toolResult.text}</pre>
+              <pre className='max-h-80 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3 text-sm whitespace-pre-wrap'>{toolResult.text}</pre>
             )}
           </div>
         ),
@@ -140,7 +140,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
         content: (
           <div className='space-y-3'>
             {userInputAudio.format && (
-              <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+              <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
                 <span className='text-muted-foreground'>{t('traces.detail.formatLabel')}</span>
                 <span className='font-mono text-xs'>{userInputAudio.format}</span>
               </div>
@@ -169,13 +169,13 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
         content: (
           <div className='space-y-3'>
             {audio.id && (
-              <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+              <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
                 <span className='text-muted-foreground'>{t('traces.detail.idLabel')}</span>
                 <span className='font-mono text-xs'>{audio.id}</span>
               </div>
             )}
             {audio.format && (
-              <div className='bg-background/70 flex items-center justify-between rounded-lg border px-3 py-2 text-sm'>
+              <div className='flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3 py-2 text-sm'>
                 <span className='text-muted-foreground'>{t('traces.detail.formatLabel')}</span>
                 <span className='font-mono text-xs'>{audio.format}</span>
               </div>
@@ -184,7 +184,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
             {audio.transcript ? (
               <div>
                 <p className='text-muted-foreground text-xs tracking-wide uppercase'>{t('traces.detail.transcriptLabel')}</p>
-                <pre className='bg-muted/40 mt-2 max-h-160 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap'>{audio.transcript}</pre>
+                <pre className='mt-2 max-h-160 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3 text-sm whitespace-pre-wrap'>{audio.transcript}</pre>
               </div>
             ) : null}
           </div>
@@ -196,7 +196,7 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
       sections.push({
         title: t('traces.detail.systemInstruction'),
         content: (
-          <pre className='bg-muted/40 max-h-160 overflow-auto rounded-lg p-3 text-sm whitespace-pre-wrap'>
+          <pre className='max-h-160 overflow-auto rounded-xl border border-border/60 bg-muted/20 p-3 text-sm whitespace-pre-wrap'>
             {systemInstruction.instruction}
           </pre>
         ),
@@ -216,12 +216,12 @@ export function SpanSection({ selectedTrace, selectedSpan, selectedSpanType }: S
 
   return (
     <>
-      <div className='border-border bg-background/95 sticky top-0 z-10 space-y-3 border-b px-6 py-5 backdrop-blur'>
+      <div className='border-border/70 bg-background/95 sticky top-0 z-10 space-y-3 border-b px-6 py-5 backdrop-blur'>
         <div className='flex flex-col gap-2'>
           <div className='flex items-center justify-between gap-3'>
             <div className='flex items-center gap-3'>
-              <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-lg'>
-                <Activity className='text-primary h-5 w-5' />
+              <div className='flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-muted/35'>
+                <Activity className='h-5 w-5 text-foreground' />
               </div>
               <div>
                 <p className='text-muted-foreground text-xs tracking-wide uppercase'>

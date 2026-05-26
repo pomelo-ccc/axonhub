@@ -6,12 +6,12 @@ import { fonts } from '@/config/fonts';
 import { cn } from '@/lib/utils';
 import { showSubmittedData } from '@/utils/show-submitted-data';
 import { useFont } from '@/context/font-context';
-import { useTheme } from '@/context/theme-context';
+import { COLOR_SCHEMES, useTheme } from '@/context/theme-context';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-const colorSchemes = ['blue', 'green', 'purple', 'orange', 'red', 'black', 'cream'] as const;
+const colorSchemes = COLOR_SCHEMES;
 
 const appearanceFormSchema = z.object({
   theme: z.enum(['light', 'dark'], {
@@ -130,18 +130,18 @@ export function AppearanceForm() {
                       <RadioGroupItem value='light' className='sr-only' />
                     </FormControl>
                     <div className='border-muted hover:border-accent items-center rounded-md border-2 p-1 transition-colors'>
-                      <div className='space-y-2 rounded-sm bg-[#f8f9fa] p-2'>
-                        <div className='space-y-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='h-2 w-[80px] rounded-lg bg-[#e9ecef]' />
-                          <div className='h-2 w-[100px] rounded-lg bg-[#e9ecef]' />
+                      <div className='space-y-2 rounded-sm bg-[#f4f2ec] p-2'>
+                        <div className='space-y-2 rounded-md border border-stone-200 bg-[#fbfaf7] p-2'>
+                          <div className='h-2 w-[80px] rounded-lg bg-stone-200' />
+                          <div className='h-2 w-[100px] rounded-lg bg-stone-200' />
                         </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='bg-primary/20 h-4 w-4 rounded-full' />
-                          <div className='h-2 w-[100px] rounded-lg bg-[#e9ecef]' />
+                        <div className='flex items-center space-x-2 rounded-md border border-stone-200 bg-[#fbfaf7] p-2'>
+                          <div className='h-4 w-4 rounded-full bg-stone-400' />
+                          <div className='h-2 w-[100px] rounded-lg bg-stone-200' />
                         </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-white p-2 shadow-sm'>
-                          <div className='h-4 w-4 rounded-full bg-[#e9ecef]' />
-                          <div className='h-2 w-[100px] rounded-lg bg-[#e9ecef]' />
+                        <div className='flex items-center space-x-2 rounded-md border border-stone-200 bg-[#fbfaf7] p-2'>
+                          <div className='h-4 w-4 rounded-full bg-stone-200' />
+                          <div className='h-2 w-[100px] rounded-lg bg-stone-200' />
                         </div>
                       </div>
                     </div>
@@ -154,16 +154,16 @@ export function AppearanceForm() {
                       <RadioGroupItem value='dark' className='sr-only' />
                     </FormControl>
                     <div className='border-muted hover:border-accent items-center rounded-md border-2 p-1 transition-colors'>
-                      <div className='space-y-2 rounded-sm bg-slate-950 p-2'>
-                        <div className='space-y-2 rounded-md bg-slate-800 p-2 shadow-sm'>
+                      <div className='space-y-2 rounded-sm bg-[#171614] p-2'>
+                        <div className='space-y-2 rounded-md border border-slate-700 bg-slate-900 p-2'>
                           <div className='h-2 w-[80px] rounded-lg bg-slate-600' />
                           <div className='h-2 w-[100px] rounded-lg bg-slate-600' />
                         </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
-                          <div className='bg-primary/30 h-4 w-4 rounded-full' />
+                        <div className='flex items-center space-x-2 rounded-md border border-slate-700 bg-slate-900 p-2'>
+                          <div className='h-4 w-4 rounded-full bg-slate-500' />
                           <div className='h-2 w-[100px] rounded-lg bg-slate-600' />
                         </div>
-                        <div className='flex items-center space-x-2 rounded-md bg-slate-800 p-2 shadow-sm'>
+                        <div className='flex items-center space-x-2 rounded-md border border-slate-700 bg-slate-900 p-2'>
                           <div className='h-4 w-4 rounded-full bg-slate-600' />
                           <div className='h-2 w-[100px] rounded-lg bg-slate-600' />
                         </div>

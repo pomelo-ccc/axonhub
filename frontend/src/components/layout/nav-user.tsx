@@ -36,7 +36,7 @@ export function NavUser({
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
+            <SidebarMenuButton size='lg' className='rounded-lg border border-transparent data-[state=open]:border-sidebar-border data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
               <Avatar className='h-8 w-8 rounded-lg'>
                 {isAvatarUrl && <AvatarImage src={user.avatar} alt={user.name} />}
                 <AvatarFallback className='rounded-lg'>{avatarFallback}</AvatarFallback>
@@ -74,7 +74,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
-              <DropdownMenuGroup>
+            <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link to='/settings/profile'>
                   <BadgeCheck />

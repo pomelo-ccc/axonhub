@@ -24,6 +24,7 @@ import { Response as UIResponse } from '@/components/ai-elements/response';
 import { AutoCompleteSelect } from '@/components/auto-complete-select';
 import { useQueryChannels } from '@/features/channels/data/channels';
 import { useQueryModels } from '@/features/models/data/models';
+import { toPublicBackendPath } from '@/lib/app-base';
 
 type PlaygroundModelSource = 'channel' | 'model_gateway';
 
@@ -97,7 +98,7 @@ export default function Playground() {
 
   const { messages, sendMessage, status, setMessages, regenerate, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: '/admin/playground/chat',
+      api: toPublicBackendPath('/admin/playground/chat'),
       credentials: 'include',
       headers: () => {
         const headers: Record<string, string> = {
@@ -322,16 +323,17 @@ export default function Playground() {
       <div className='bg-background flex h-screen w-full flex-col md:flex-row'>
         {/* Settings Sidebar */}
 
-        <div className='bg-card shadow-soft border-border m-4 flex max-h-[40vh] w-auto flex-col rounded-2xl border border-r md:max-h-none md:w-[340px] md:min-w-[280px] md:max-w-[400px]'>
-          <div className='border-b p-4'>
-            <h1 className='text-xl font-bold tracking-tight'>{t('playground.title')}</h1>
-            <p className='text-muted-foreground mt-1 text-xs leading-relaxed'>{t('playground.description')}</p>
+        <div className='m-4 flex max-h-[40vh] w-auto flex-col rounded-[1.5rem] border border-border/70 bg-card/92 md:max-h-none md:w-[340px] md:min-w-[280px] md:max-w-[400px]'>
+          <div className='border-b border-border/70 p-5'>
+            <p className='text-muted-foreground text-[11px] font-medium tracking-[0.24em] uppercase'>Playground</p>
+            <h1 className='mt-2 text-xl font-semibold tracking-tight'>{t('playground.title')}</h1>
+            <p className='text-muted-foreground mt-1 max-w-[28ch] text-xs leading-relaxed'>{t('playground.description')}</p>
           </div>
 
-          <ScrollArea className='min-h-0 flex-1 p-4'>
+          <ScrollArea className='min-h-0 flex-1 p-5'>
             <div className='space-y-6'>
               <div className='space-y-3'>
-                <Label className='text-xs font-semibold'>{t('playground.settings.modelSource')}</Label>
+                <Label className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>{t('playground.settings.modelSource')}</Label>
                 <Tabs value={modelSource} onValueChange={handleModelSourceChange}>
                   <TabsList className='grid w-full grid-cols-2'>
                     <TabsTrigger value='channel'>{t('playground.settings.channel')}</TabsTrigger>
@@ -342,7 +344,7 @@ export default function Playground() {
 
               {modelSource === 'channel' && (
                 <div className='space-y-3'>
-                  <Label htmlFor='channel' className='text-xs font-semibold'>
+                  <Label htmlFor='channel' className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>
                     {t('playground.settings.channel')}
                   </Label>
                   <AutoCompleteSelect
@@ -357,7 +359,7 @@ export default function Playground() {
               )}
 
               <div className='space-y-3'>
-                <Label htmlFor='model' className='text-xs font-semibold'>
+                <Label htmlFor='model' className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>
                   {t('playground.settings.model')}
                 </Label>
                 <AutoCompleteSelect
@@ -384,10 +386,10 @@ export default function Playground() {
               </div>
 
               <div className='space-y-3'>
-                <Label htmlFor='temperature' className='text-xs font-semibold'>
+                <Label htmlFor='temperature' className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>
                   {t('playground.settings.temperature')}: {temperature}
                 </Label>
-                <div className='px-1'>
+                <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-3'>
                   <Input
                     id='temperature'
                     type='range'
@@ -396,7 +398,7 @@ export default function Playground() {
                     step='0.1'
                     value={temperature}
                     onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                    className='bg-muted h-2 w-full cursor-pointer appearance-none rounded-lg'
+                    className='h-2 w-full cursor-pointer appearance-none rounded-lg border-0 bg-transparent px-0 py-0'
                   />
                   <div className='text-muted-foreground mt-1 flex justify-between text-[10px]'>
                     <span>0</span>
@@ -407,7 +409,7 @@ export default function Playground() {
               </div>
 
               <div className='space-y-3'>
-                <Label htmlFor='maxTokens' className='text-xs font-semibold'>
+                <Label htmlFor='maxTokens' className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>
                   {t('playground.settings.maxTokens')}
                 </Label>
                 <Input
@@ -422,7 +424,7 @@ export default function Playground() {
               </div>
 
               <div className='space-y-3'>
-                <Label htmlFor='systemPrompt' className='text-xs font-semibold'>
+                <Label htmlFor='systemPrompt' className='text-[11px] font-medium tracking-[0.18em] uppercase text-muted-foreground'>
                   {t('playground.settings.systemPrompt')}
                 </Label>
                 <Textarea
@@ -437,11 +439,11 @@ export default function Playground() {
             </div>
           </ScrollArea>
 
-          <div className='space-y-2 border-t p-4'>
+          <div className='space-y-2 border-t border-border/70 p-5'>
             <Button
               onClick={handleRetry}
               variant='outline'
-              className='h-9 w-full text-xs'
+              className='h-9 w-full justify-start text-xs'
               disabled={isLoading || messages.length === 0 || messages.every((msg) => msg.role !== 'assistant')}
             >
               <IconRefresh className='mr-2 h-3 w-3' />
@@ -454,7 +456,7 @@ export default function Playground() {
                     : t('playground.chat.retry')}
             </Button>
 
-            <Button onClick={handleClear} variant='outline' className='h-9 w-full text-xs' disabled={isLoading}>
+            <Button onClick={handleClear} variant='outline' className='h-9 w-full justify-start text-xs' disabled={isLoading}>
               <IconTrash className='mr-2 h-3 w-3' />
               {t('playground.chat.clear')}
             </Button>
@@ -463,7 +465,7 @@ export default function Playground() {
 
         {/* Chat Area */}
         <div className='flex flex-1 flex-col p-4'>
-          <div className='shadow-soft border-border bg-card flex h-full flex-col rounded-2xl border p-6'>
+          <div className='flex h-full flex-col rounded-[1.5rem] border border-border/70 bg-card/92 p-6'>
             <Conversation className='max-h-[50vh] flex-1 md:max-h-none'>
               <ConversationContent>
                 {messages.length === 0 ? (
@@ -529,7 +531,7 @@ export default function Playground() {
                 value={input}
                 placeholder={t('playground.chat.typeMessage')}
                 onChange={(e) => setInput(e.currentTarget.value)}
-                className='pr-16'
+                className='min-h-[112px] rounded-[1.25rem] border border-border/70 bg-background/80 pr-16'
               />
               <PromptInputSubmit
                 status={status}

@@ -55,15 +55,15 @@ function CollapsibleSection({ title, icon, children, storageKey, defaultOpen = f
   return (
     <div className='space-y-4'>
       <button
-        type="button"
+        type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className='flex w-full items-center justify-between rounded-lg border bg-card p-4 text-left transition-colors hover:bg-accent/50'
+        className='flex w-full items-center justify-between rounded-lg border border-border/80 bg-card/45 px-4 py-3.5 text-left transition-[background-color,border-color,box-shadow] hover:border-primary/45 hover:bg-accent/35 hover:shadow-sm'
       >
         <div className='flex items-center gap-3'>
-          <div className='flex h-8 w-8 items-center justify-center rounded-md bg-primary/10'>
+          <div className='flex h-8 w-8 items-center justify-center rounded-md border border-border/80 bg-secondary text-primary'>
             {icon}
           </div>
-          <span className='text-lg font-semibold'>{title}</span>
+          <span className='text-base font-medium tracking-[-0.01em]'>{title}</span>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -111,7 +111,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className='flex-1 space-y-4 p-8 pt-6'>
+      <div className='flex-1 space-y-4 p-6 pt-5'>
         <div className='flex items-center justify-between space-y-2'>
           <Skeleton className='h-8 w-[200px]' />
         </div>
@@ -133,7 +133,7 @@ export default function DashboardPage() {
 
   if (error) {
     return (
-      <div className='flex-1 space-y-4 p-8 pt-6'>
+      <div className='flex-1 space-y-4 p-6 pt-5'>
         <div className='text-red-500'>
           {t('common.loadError')} {error.message}
         </div>
@@ -142,13 +142,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className='flex-1 space-y-6 p-8 pt-6'>
+    <div className='flex-1 space-y-6 p-6 pt-5'>
       <Header />
 
       {/* 概览部分 - 始终展示 */}
       <section className='space-y-4'>
         {/* <h2 className='text-2xl font-bold tracking-tight'>{t('dashboard.sections.overview')}</h2> */}
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-4'>
+        <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
           <TotalRequestsCard />
           <SuccessRateCard />
           <TokenStatsCard />

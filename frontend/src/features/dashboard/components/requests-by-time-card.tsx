@@ -53,7 +53,7 @@ export function RequestsByTimeCard() {
     <Card className='hover-card'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <CardTitle className='text-sm font-medium'>{t('dashboard.cards.requestsByTime')}</CardTitle>
-        <div className='bg-primary/10 text-primary dark:bg-primary/20 flex h-9 w-9 items-center justify-center rounded-full'>
+        <div className='flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-muted/35 text-foreground'>
           <Clock className='h-4 w-4' />
         </div>
       </CardHeader>

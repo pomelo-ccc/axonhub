@@ -31,7 +31,7 @@ export function TodayRequestsCard() {
       <Card>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
           <div className='flex items-center gap-2'>
-            <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+            <div className='bg-secondary text-primary rounded-md border border-border/80 p-1.5'>
               <Activity className='h-4 w-4' />
             </div>
             <CardTitle className='text-sm font-medium'>{t('dashboard.stats.todayRequests')}</CardTitle>
@@ -45,18 +45,20 @@ export function TodayRequestsCard() {
   }
 
   return (
-    <Card className='bg-primary text-primary-foreground hover-card'>
+    <Card className='hover-card border-ring/20 bg-accent/65'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <div className='flex items-center gap-2'>
-          <Activity className='text-primary-foreground/70 h-4 w-4' />
-          <CardTitle className='text-primary-foreground/90 text-sm font-medium'>{t('dashboard.stats.todayRequests')}</CardTitle>
+          <div className='flex h-8 w-8 items-center justify-center rounded-md border border-ring/20 bg-background/70 text-primary'>
+            <Activity className='h-4 w-4' />
+          </div>
+          <CardTitle className='text-sm font-medium'>{t('dashboard.stats.todayRequests')}</CardTitle>
         </div>
-        <div className='bg-primary-foreground h-2 w-2 animate-ping rounded-full' />
+        <div className='h-2 w-2 rounded-full bg-primary' />
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
           <div className='mt-2 font-mono text-4xl font-bold tracking-tight'>{formatNumber(stats?.requestStats?.requestsToday || 0)}</div>
-          <div className='border-primary-foreground/10 text-primary-foreground/70 mt-4 flex justify-between border-t pt-3 text-xs'>
+          <div className='mt-4 flex justify-between border-t border-border/75 pt-3 text-xs text-muted-foreground'>
             <span>
               {t('dashboard.stats.thisWeek')}: {formatNumber(stats?.requestStats?.requestsThisWeek || 0)}
             </span>

@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import AuthLayout from '../auth-layout';
 import TwoColumnAuth from '../components/two-column-auth';
-import AnimatedLineBackground from './components/animated-line-background';
 import { UserAuthForm } from './components/user-auth-form';
 import './login-styles.css';
 
@@ -10,13 +9,11 @@ export default function SignIn() {
 
   return (
     <AuthLayout>
-      <div data-testid='sign-in-animation-layer'>
-        <AnimatedLineBackground key='optimized-layout' />
-      </div>
+      <div data-testid='sign-in-animation-layer' className='signin-scene' aria-hidden='true' />
       <TwoColumnAuth
         title={t('auth.signIn.title')}
         description={t('auth.signIn.subtitle')}
-        rightFooter={<p className='text-xs leading-relaxed text-slate-500 sm:text-sm'>{t('auth.signIn.footer.agreement')}</p>}
+        rightFooter={<p className='text-xs leading-7 text-muted-foreground sm:text-sm'>{t('auth.signIn.footer.agreement')}</p>}
       >
         <UserAuthForm />
       </TwoColumnAuth>

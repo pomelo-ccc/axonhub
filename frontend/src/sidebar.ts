@@ -69,6 +69,11 @@ export function useSidebarData(): SidebarData {
           icon: IconLayoutDashboard,
         } as NavLink,
         {
+          title: t('sidebar.items.minimalism'),
+          url: '/minimalism',
+          icon: IconNote,
+        } as NavLink,
+        {
           title: t('sidebar.items.projects'),
           url: '/projects',
           icon: IconPackages,

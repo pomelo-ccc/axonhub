@@ -8,15 +8,9 @@ export interface TwoColumnAuthProps {
   description?: React.ReactNode;
   children: React.ReactNode;
   rightFooter?: React.ReactNode;
-  rightMaxWidthClassName?: string; // e.g. 'max-w-md'
+  rightMaxWidthClassName?: string;
 }
 
-/**
- * TwoColumnAuth
- * Reusable left/right layout used by Sign-In and Initialization pages.
- * Left panel: shared AxonHub brand section and diagram.
- * Right panel: gradient background with a Card shell for page-specific forms.
- */
 export default function TwoColumnAuth({
   title,
   description,
@@ -25,66 +19,53 @@ export default function TwoColumnAuth({
   rightMaxWidthClassName = 'max-w-md',
 }: TwoColumnAuthProps) {
   const { t } = useTranslation();
-  return (
-    <div className='flex min-h-screen'>
-      {/* Left Side - Brand/Welcome Section */}
-      <div className='relative hidden overflow-hidden bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-[1.5px] lg:flex lg:w-1/2'>
-        {/* Elegant background pattern */}
-        <div className='absolute inset-0 opacity-10'>
-          <div className='absolute top-0 left-0 h-full w-full bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.1)_0%,transparent_50%)]'></div>
-          <div className='absolute right-0 bottom-0 h-full w-full bg-[radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.05)_0%,transparent_50%)]'></div>
-        </div>
 
-        {/* Content */}
-        <div className='relative z-10 flex flex-col justify-center px-12 py-16 text-white'>
-          <div className='w-full max-w-lg'>
-            <div className='mb-8'>
-              <h1 className='mb-4 text-4xl font-light text-slate-100'>{t('auth.brand.title')}</h1>
-              <h2 className='mb-6 bg-gradient-to-r from-emerald-300 to-teal-200 bg-clip-text text-5xl font-bold text-transparent'>
-                AxonHub
-              </h2>
-              <p className='text-lg leading-relaxed text-slate-300'>{t('auth.brand.description')}</p>
+  return (
+    <div className='grid min-h-[calc(100vh-5rem)] lg:grid-cols-[1.08fr_0.92fr]'>
+      <div className='relative hidden border-r border-border/75 lg:flex'>
+        <div className='flex w-full flex-col justify-between px-10 py-12 xl:px-14'>
+          <div className='max-w-xl space-y-8'>
+            <div className='space-y-3'>
+              <p className='text-[11px] uppercase tracking-[0.22em] text-muted-foreground'>{t('auth.brand.title')}</p>
+              <h2 className='max-w-[10ch] text-5xl font-medium tracking-[-0.04em] text-foreground xl:text-6xl'>AxonHub</h2>
+              <p className='max-w-[32rem] text-base leading-7 text-muted-foreground xl:text-lg'>{t('auth.brand.description')}</p>
             </div>
 
-            <div className='mt-4'>
-              <AutoRouterDiagram />
+            <div className='grid gap-3 text-sm text-muted-foreground'>
+              <div className='flex items-center justify-between border-b border-border/75 py-3'>
+                <span className='uppercase tracking-[0.14em]'>Surface</span>
+                <span className='text-foreground'>Gateway operations</span>
+              </div>
+              <div className='flex items-center justify-between border-b border-border/75 py-3'>
+                <span className='uppercase tracking-[0.14em]'>Focus</span>
+                <span className='text-foreground'>Requests, channels, keys</span>
+              </div>
+              <div className='flex items-center justify-between border-b border-border/75 py-3'>
+                <span className='uppercase tracking-[0.14em]'>Mode</span>
+                <span className='text-foreground'>Quiet by default</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Decorative elements */}
-        <div className='absolute bottom-0 left-0 h-32 w-32 -translate-x-16 translate-y-16 rounded-full bg-gradient-to-tr from-slate-700/10 to-transparent'></div>
-        <div className='absolute top-0 right-0 h-48 w-48 translate-x-24 -translate-y-24 rounded-full bg-gradient-to-bl from-slate-600/5 to-transparent'></div>
+          <div className='max-w-xl rounded-xl border border-border/80 bg-card/75 p-6 shadow-xs backdrop-blur-sm'>
+            <p className='mb-4 text-[11px] uppercase tracking-[0.22em] text-muted-foreground'>Routing diagram</p>
+            <AutoRouterDiagram />
+          </div>
+        </div>
       </div>
 
-      {/* Right Side - Card/Form */}
-      <div className='relative flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 lg:w-1/2'>
-        {/* Subtle background texture */}
-        <div className='absolute inset-0 opacity-30'>
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(148,163,184,0.1)_0%,transparent_70%)]'></div>
-        </div>
-
-        <div id='auth-card-wrapper' data-testid='auth-card-wrapper' className={`relative z-10 w-full ${rightMaxWidthClassName} px-6 py-8 sm:px-8 sm:py-12`}>
-          <Card
-            className='animate-fade-in-up border-slate-200/60 bg-white/90 text-slate-800 shadow-xl shadow-slate-900/10 backdrop-blur-sm transition-all duration-500 hover:shadow-2xl hover:shadow-slate-900/15'
-            style={
-              {
-                // Ensure shadcn variable-based components render with dark-on-light colors inside the white card
-                '--foreground': '#1e293b', // slate-800
-                '--muted-foreground': '#94a3b8', // slate-400 (for placeholders, help texts)
-              } as React.CSSProperties
-            }
-          >
-            <CardHeader className='px-6 pt-8 pb-6 text-center sm:px-8 sm:pb-8'>
-              <CardTitle className='mb-3 text-2xl font-light text-slate-800 sm:text-3xl'>{title}</CardTitle>
-              {description ? (
-                <CardDescription className='text-sm leading-relaxed text-slate-600 sm:text-base'>{description}</CardDescription>
-              ) : null}
+      <div className='relative flex items-center justify-center px-6 py-10 sm:px-8 lg:px-10'>
+        <div id='auth-card-wrapper' data-testid='auth-card-wrapper' className={`relative z-10 w-full ${rightMaxWidthClassName} py-6`}>
+          <Card className='border-border/85 bg-card/95 shadow-sm'>
+            <CardHeader className='px-6 pt-8 pb-6 text-left sm:px-8 sm:pb-8'>
+              <p className='text-[11px] uppercase tracking-[0.22em] text-muted-foreground'>{t('auth.signIn.title')}</p>
+              <CardTitle className='mt-3 text-3xl font-medium tracking-[-0.03em] sm:text-[2rem]'>{title}</CardTitle>
+              {description ? <CardDescription className='max-w-[34ch] pt-1 text-sm leading-7 sm:text-base'>{description}</CardDescription> : null}
             </CardHeader>
             <CardContent className='px-6 pb-8 sm:px-8'>{children}</CardContent>
           </Card>
 
-          {rightFooter ? <div className='mt-6 px-4 text-center sm:mt-8'>{rightFooter}</div> : null}
+          {rightFooter ? <div className='mt-6 px-1 text-left sm:mt-8'>{rightFooter}</div> : null}
         </div>
       </div>
     </div>

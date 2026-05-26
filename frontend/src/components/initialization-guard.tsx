@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from '@tanstack/react-router';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSystemStatus } from '@/features/auth/data/initialization';
+import { getCurrentAppPath } from '@/lib/app-base';
 
 interface InitializationGuardProps {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export function InitializationGuard({ children }: InitializationGuardProps) {
     // Only redirect if we have data and system is not initialized
     if (systemStatus && !systemStatus.isInitialized) {
       // Check if we're not already on the initialization page
-      const currentPath = window.location.pathname;
+      const currentPath = getCurrentAppPath();
       if (currentPath !== '/initialization') {
         setIsNavigating(true);
         //@ts-ignore
@@ -42,19 +43,12 @@ export function InitializationGuard({ children }: InitializationGuardProps) {
 
   // Show error if failed to check system status
   if (error) {
-    return (
-      <div className='flex h-screen items-center justify-center'>
-        <div className='text-center'>
-          <h1 className='text-2xl font-bold text-red-600'>System Error</h1>
-          <p className='text-muted-foreground'>Failed to check system status</p>
-        </div>
-      </div>
-    );
+    return <>{children}</>;
   }
 
   // If system is not initialized and we're not on initialization page, don't render children
   // But allow navigation to complete naturally
-  if ((systemStatus && !systemStatus.isInitialized && window.location.pathname !== '/initialization') || isNavigating) {
+  if ((systemStatus && !systemStatus.isInitialized && getCurrentAppPath() !== '/initialization') || isNavigating) {
     // Don't return null immediately - let the navigation complete
     // The useEffect will handle the redirect
     return (

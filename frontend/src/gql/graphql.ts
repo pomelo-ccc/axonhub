@@ -1,6 +1,7 @@
 import { toast } from 'sonner';
 import { getTokenFromStorage, removeTokenFromStorage } from '@/stores/authStore';
 import i18n from '@/lib/i18n';
+import { toAppPath, toPublicBackendPath } from '@/lib/app-base';
 
 export class GraphQLRequestError extends Error {
   status?: number;
@@ -35,7 +36,7 @@ export function extractOperationName(query: string): string | undefined {
   return undefined;
 }
 
-export const GRAPHQL_ENDPOINT = '/admin/graphql';
+export const GRAPHQL_ENDPOINT = toPublicBackendPath('/admin/graphql');
 
 // GraphQL client function with token support
 export async function graphqlRequest<T>(
@@ -84,7 +85,7 @@ export async function graphqlRequest<T>(
     // Clear token and redirect to login
     removeTokenFromStorage();
     toast.error(i18n.t('common.errors.sessionExpiredSignIn'));
-    window.location.href = '/sign-in';
+    window.location.href = toAppPath('/sign-in');
     throw new GraphQLRequestError('Unauthorized', { status: response.status, isAuthError: true });
   }
 
@@ -126,7 +127,7 @@ export async function graphqlRequest<T>(
       // Clear token and redirect to login
       removeTokenFromStorage();
       toast.error(i18n.t('common.errors.sessionExpiredSignIn'));
-      window.location.href = '/sign-in';
+      window.location.href = toAppPath('/sign-in');
       throw new GraphQLRequestError('Unauthorized', { status: 401, isAuthError: true });
     }
 

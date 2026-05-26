@@ -33,7 +33,7 @@ export function SuccessRateCard() {
       <Card>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
           <div className='flex items-center gap-2'>
-            <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+            <div className='bg-secondary text-primary rounded-md border border-border/80 p-1.5'>
               <ShieldCheck className='h-4 w-4' />
             </div>
             <CardTitle className='text-sm font-medium'>{t('dashboard.cards.successRate')}</CardTitle>
@@ -53,7 +53,7 @@ export function SuccessRateCard() {
     <Card className='hover-card'>
       <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
         <div className='flex items-center gap-2'>
-          <div className='bg-primary/10 text-primary dark:bg-primary/20 rounded-lg p-1.5'>
+          <div className='bg-secondary text-primary rounded-md border border-border/80 p-1.5'>
             <ShieldCheck className='h-4 w-4' />
           </div>
           <CardTitle className='text-sm font-medium'>{t('dashboard.cards.successRate')}</CardTitle>
@@ -72,7 +72,7 @@ export function SuccessRateCard() {
             <span className='text-muted-foreground'>
               {formatNumber(stats?.failedRequests || 0)} {t('dashboard.stats.failedRequests')}
             </span>
-            <span className='text-primary font-medium'>{t('dashboard.stats.average')}</span>
+            <span className='font-medium text-muted-foreground'>{t('dashboard.stats.average')}</span>
           </div>
         </div>
       </CardContent>

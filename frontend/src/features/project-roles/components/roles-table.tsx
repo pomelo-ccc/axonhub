@@ -106,8 +106,8 @@ export function RolesTable({
   return (
     <div className='flex flex-1 flex-col overflow-hidden' data-testid='roles-table'>
       <DataTableToolbar table={table} />
-      <div className='shadow-soft relative mt-4 flex-1 overflow-auto overflow-x-hidden rounded-2xl border border-[var(--table-border)]'>
-        <Table className='border-separate border-spacing-0 rounded-2xl bg-[var(--table-background)]'>
+      <div className='relative mt-4 flex-1 overflow-auto overflow-x-hidden rounded-xl border border-[var(--table-border)] bg-[var(--table-background)]/70'>
+        <Table className='border-separate border-spacing-0 rounded-xl bg-transparent'>
           <TableHeader className='sticky top-0 z-20 bg-[var(--table-header)] shadow-sm'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className='group/row border-0'>

@@ -72,24 +72,24 @@ export const ChannelsTypeTabs = memo(function ChannelsTypeTabs({ typeCounts, sel
   return (
     <div className='mb-6 w-full overflow-hidden'>
       <div
-        className='hide-scroll flex flex-nowrap items-center gap-2 overflow-x-auto scroll-smooth'
+        className='hide-scroll flex flex-nowrap items-center gap-2 overflow-x-auto rounded-full border border-border/70 bg-muted/30 p-1.5 scroll-smooth'
         onWheel={(e) => { e.currentTarget.scrollLeft += e.deltaY; }}
       >
         {/* All tab */}
         <button
           onClick={() => onTabChange('all')}
           className={cn(
-            'flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-all',
+            'flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-[background-color,border-color,color]',
             selectedTab === 'all'
-              ? 'bg-primary text-primary-foreground shadow-primary/20 shadow-md'
-              : 'bg-card border-border text-foreground hover:border-primary hover:text-primary border'
+              ? 'border border-border bg-background text-foreground shadow-none'
+              : 'border border-transparent bg-transparent text-muted-foreground hover:border-border/80 hover:bg-background/80 hover:text-foreground'
           )}
         >
           {t('channels.tabs.all')}{' '}
           <span
             className={cn(
-              'bg-muted text-muted-foreground ml-1 rounded-full px-1.5 text-xs',
-              selectedTab === 'all' && 'bg-primary-foreground/20 text-primary-foreground'
+              'ml-1 rounded-full border border-transparent bg-muted px-1.5 text-[11px] text-muted-foreground',
+              selectedTab === 'all' && 'border-border/70 bg-muted/70 text-foreground'
             )}
           >
             {totalCount}
@@ -104,18 +104,18 @@ export const ChannelsTypeTabs = memo(function ChannelsTypeTabs({ typeCounts, sel
               key={prefix}
               onClick={() => onTabChange(prefix)}
               className={cn(
-                'flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-all',
+                'flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium whitespace-nowrap transition-[background-color,border-color,color]',
                 selectedTab === prefix
-                  ? 'bg-primary text-primary-foreground shadow-primary/20 shadow-md'
-                  : 'bg-card border-border text-foreground hover:border-primary hover:text-primary border'
+                  ? 'border border-border bg-background text-foreground shadow-none'
+                  : 'border border-transparent bg-transparent text-muted-foreground hover:border-border/80 hover:bg-background/80 hover:text-foreground'
               )}
             >
               {Icon && <Icon size={16} />}
               {t(`channels.types.${prefix}`)}{' '}
               <span
                 className={cn(
-                  'bg-muted text-muted-foreground rounded-full px-1.5 text-xs',
-                  selectedTab === prefix && 'bg-primary-foreground/20 text-primary-foreground'
+                  'rounded-full border border-transparent bg-muted px-1.5 text-[11px] text-muted-foreground',
+                  selectedTab === prefix && 'border-border/70 bg-muted/70 text-foreground'
                 )}
               >
                 {totalCount}

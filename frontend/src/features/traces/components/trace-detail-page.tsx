@@ -119,7 +119,7 @@ export default function TraceDetailPage() {
     <div className='flex h-screen flex-col'>
       {/* Normal Header - hidden in fullscreen */}
       {!isFullscreen && (
-        <Header className='bg-background/95 supports-[backdrop-filter]:bg-background/60 w-full border-b backdrop-blur'>
+        <Header className='bg-background/95 supports-[backdrop-filter]:bg-background/70 w-full border-b border-border/70 backdrop-blur'>
           <div className='flex w-full items-center justify-between gap-2'>
             <div className='flex items-center gap-2 sm:gap-4 min-w-0 flex-1'>
               <Button variant='ghost' size='sm' onClick={handleBack} className='hover:bg-accent shrink-0'>
@@ -128,8 +128,8 @@ export default function TraceDetailPage() {
               </Button>
               <Separator orientation='vertical' className='h-6 shrink-0 hidden sm:block' />
               <div className='flex items-center gap-2 sm:gap-3 min-w-0'>
-                <div className='bg-primary/10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-lg shrink-0'>
-                  <Activity className='text-primary h-3.5 w-3.5 sm:h-4 sm:w-4' />
+                <div className='flex h-7 w-7 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-muted/35 sm:h-8 sm:w-8'>
+                  <Activity className='h-3.5 w-3.5 text-foreground sm:h-4 sm:w-4' />
                 </div>
                 <div className='min-w-0'>
                   <h1 className='text-sm sm:text-lg leading-none font-semibold truncate'>
@@ -164,29 +164,29 @@ export default function TraceDetailPage() {
           <>
             {/* Top: Usage Metadata */}
             {!isFullscreen && (
-              <div className='px-4 sm:px-6 py-3 sm:py-4 border-b bg-background'>
+              <div className='border-b border-border/70 bg-background px-4 py-3 sm:px-6 sm:py-4'>
                 <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4'>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.totalTokensLabel')}</p>
                     <p className='text-base sm:text-lg font-semibold'>{(trace.usageMetadata?.totalTokens ?? 0).toLocaleString()}</p>
                   </div>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.inputTokensLabel')}</p>
                     <p className='text-base sm:text-lg font-semibold'>{(trace.usageMetadata?.totalInputTokens ?? 0).toLocaleString()}</p>
                   </div>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.outputTokensLabel')}</p>
                     <p className='text-base sm:text-lg font-semibold'>{(trace.usageMetadata?.totalOutputTokens ?? 0).toLocaleString()}</p>
                   </div>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.cachedTokensLabel')}</p>
                     <p className='text-base sm:text-lg font-semibold'>{(trace.usageMetadata?.totalCachedTokens ?? 0).toLocaleString()}</p>
                   </div>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('traces.detail.cachedWriteTokensLabel')}</p>
                     <p className='text-base sm:text-lg font-semibold'>{(trace.usageMetadata?.totalCachedWriteTokens ?? 0).toLocaleString()}</p>
                   </div>
-                  <div className='bg-muted/30 rounded-lg px-3 py-2'>
+                  <div className='rounded-xl border border-border/60 bg-muted/20 px-3 py-2.5'>
                     <p className='text-muted-foreground text-xs sm:text-sm'>{t('usageLogs.columns.totalCost')}</p>
                     {trace.usageMetadata?.totalCost ? (
                       <p className='text-base sm:text-lg font-semibold'>
@@ -207,7 +207,7 @@ export default function TraceDetailPage() {
 
             {/* Fullscreen Header */}
             {isFullscreen && (
-              <div className='flex items-center justify-between px-4 py-3 border-b bg-background shrink-0'>
+              <div className='flex shrink-0 items-center justify-between border-b border-border/70 bg-background px-4 py-3'>
                 <div className='flex items-center gap-3'>
                   <Button variant='ghost' size='sm' onClick={() => setIsFullscreen(false)}>
                     <ArrowLeft className='mr-2 h-4 w-4' />
@@ -223,11 +223,11 @@ export default function TraceDetailPage() {
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <div className='bg-muted inline-flex items-center rounded-md p-0.5 mr-2'>
+                  <div className='mr-2 inline-flex items-center rounded-full border border-border/70 bg-muted/30 p-1'>
                     <Button
                       variant='ghost'
                       size='sm'
-                      className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flat' && 'bg-background shadow-sm')}
+                      className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flat' && 'border border-border/70 bg-background shadow-none')}
                       onClick={() => setViewMode('flat')}
                     >
                       <List className='h-3.5 w-3.5' />
@@ -236,7 +236,7 @@ export default function TraceDetailPage() {
                     <Button
                       variant='ghost'
                       size='sm'
-                      className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flow' && 'bg-background shadow-sm')}
+                      className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flow' && 'border border-border/70 bg-background shadow-none')}
                       onClick={() => setViewMode('flow')}
                     >
                       <GitBranch className='h-3.5 w-3.5' />
@@ -245,7 +245,7 @@ export default function TraceDetailPage() {
                     <Button
                       variant='ghost'
                       size='sm'
-                      className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'tree' && 'bg-background shadow-sm')}
+                      className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'tree' && 'border border-border/70 bg-background shadow-none')}
                       onClick={() => setViewMode('tree')}
                     >
                       <Waypoints className='h-3.5 w-3.5' />
@@ -268,11 +268,11 @@ export default function TraceDetailPage() {
             <div className={cn('flex flex-1 overflow-hidden flex-col', isFullscreen ? '' : 'pt-2')}>
               {/* View mode selector - always visible on mobile */}
               <div className='mb-3 flex items-center justify-end shrink-0 px-4 sm:px-6'>
-                <div className='bg-muted inline-flex items-center rounded-md p-0.5'>
+                <div className='inline-flex items-center rounded-full border border-border/70 bg-muted/30 p-1'>
                   <Button
                     variant='ghost'
                     size='sm'
-                    className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flat' && 'bg-background shadow-sm')}
+                    className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flat' && 'border border-border/70 bg-background shadow-none')}
                     onClick={() => setViewMode('flat')}
                   >
                     <List className='h-3.5 w-3.5' />
@@ -281,7 +281,7 @@ export default function TraceDetailPage() {
                   <Button
                     variant='ghost'
                     size='sm'
-                    className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'flow' && 'bg-background shadow-sm')}
+                    className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'flow' && 'border border-border/70 bg-background shadow-none')}
                     onClick={() => setViewMode('flow')}
                   >
                     <GitBranch className='h-3.5 w-3.5' />
@@ -290,7 +290,7 @@ export default function TraceDetailPage() {
                   <Button
                     variant='ghost'
                     size='sm'
-                    className={cn('h-7 gap-1.5 rounded-sm px-2.5 text-xs', viewMode === 'tree' && 'bg-background shadow-sm')}
+                    className={cn('h-7 gap-1.5 rounded-full px-2.5 text-xs', viewMode === 'tree' && 'border border-border/70 bg-background shadow-none')}
                     onClick={() => setViewMode('tree')}
                   >
                     <Waypoints className='h-3.5 w-3.5' />
@@ -341,11 +341,11 @@ export default function TraceDetailPage() {
 
                 {/* Right: Span Detail - collapsible on mobile */}
                 <div className={cn(
-                  'border-border bg-background overflow-y-auto border-t sm:border-t-0 sm:border-l transition-all duration-300',
+                  'border-border/70 bg-background overflow-y-auto border-t transition-all duration-300 sm:border-t-0 sm:border-l',
                   isFullscreen ? 'w-full sm:w-[450px]' : 'w-full sm:w-[500px]',
                   selectedSpan ? 'flex flex-col' : 'hidden sm:flex sm:flex-col'
                 )}>
-                  <div className='flex items-center justify-between px-4 py-3 border-b sm:hidden bg-background sticky top-0 z-10'>
+                  <div className='sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-background px-4 py-3 sm:hidden'>
                     <div className='flex items-center gap-2'>
                       <Activity className='text-primary h-4 w-4' />
                       <h3 className='font-medium text-sm'>{t('traces.detail.spanDetail')}</h3>
@@ -368,7 +368,7 @@ export default function TraceDetailPage() {
           </>
         ) : (
           <div className='flex h-full items-center justify-center p-6'>
-            <Card className='border-0 shadow-sm'>
+            <Card className='border border-border/70 shadow-none'>
               <CardContent className='py-16'>
                 <div className='flex h-full items-center justify-center'>
                   <div className='space-y-4 text-center'>

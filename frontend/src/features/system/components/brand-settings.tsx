@@ -121,7 +121,7 @@ export function BrandSettings() {
                   <img
                     src={brandLogo}
                     alt='Brand Logo Preview'
-                    className='h-32 w-32 rounded-lg border object-cover shadow-sm'
+                    className='h-32 w-32 rounded-xl border border-border/70 object-cover shadow-none'
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
@@ -132,7 +132,7 @@ export function BrandSettings() {
                     size='sm'
                     onClick={handleRemoveLogo}
                     disabled={isLoading}
-                    className='absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 shadow-md'
+                    className='absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 shadow-none'
                   >
                     <X className='h-3 w-3' />
                   </Button>
