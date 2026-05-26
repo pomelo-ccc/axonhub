@@ -4,6 +4,62 @@
 
 ## 📁 脚本列表
 
+### 生产部署脚本
+
+#### `deploy/deploy-production.sh`
+将 GitHub Actions 生成的 `axonhub.gz` 上传到服务器，自动备份当前二进制、替换、重启服务，并在健康检查失败时自动回滚。
+
+```bash
+./scripts/deploy/deploy-production.sh /path/to/axonhub.gz
+```
+
+#### `deploy/rollback-production.sh`
+手动回滚到最近一次备份，或回滚到指定备份文件。
+
+```bash
+./scripts/deploy/rollback-production.sh
+./scripts/deploy/rollback-production.sh /root/axonhub-backups/axonhub.before_20260526093000
+```
+
+#### `deploy/healthcheck.sh`
+执行部署后的服务状态检查，默认检查：
+
+- 服务器本地：`http://127.0.0.1:8090/admin/system/status`
+- 公网入口：`http://124.221.109.50/api/`
+
+```bash
+./scripts/deploy/healthcheck.sh
+```
+
+#### GitHub Actions 工作流
+
+工作流文件：`.github/workflows/deploy-axonhub.yml`
+
+默认行为：
+- `push` 到 `unstable`、`development`、`codex/**` 时只做构建校验
+- `workflow_dispatch` 手动触发时可执行 `deploy` 或 `rollback`
+
+必需的 GitHub Secrets：
+- `AXONHUB_DEPLOY_HOST`
+- `AXONHUB_DEPLOY_SSH_KEY`
+
+可选的 GitHub Secrets：
+- `AXONHUB_DEPLOY_KNOWN_HOSTS`
+
+可选的 GitHub Variables：
+- `AXONHUB_DEPLOY_USER`
+- `AXONHUB_DEPLOY_PORT`
+- `AXONHUB_DEPLOY_SSH_IDENTITY_FILE`
+- `AXONHUB_DEPLOY_KNOWN_HOSTS_FILE`
+- `AXONHUB_DEPLOY_SERVICE`
+- `AXONHUB_DEPLOY_BINARY_PATH`
+- `AXONHUB_DEPLOY_BACKUP_DIR`
+- `AXONHUB_DEPLOY_TMP_DIR`
+- `AXONHUB_LOCAL_HEALTHCHECK_URL`
+- `AXONHUB_PUBLIC_HEALTHCHECK_URL`
+- `AXONHUB_SECONDARY_HEALTHCHECK_URL`
+- `AXONHUB_SECONDARY_HEALTHCHECK_STRICT`
+
 ### E2E 测试脚本
 
 #### `e2e/e2e-test.sh`
