@@ -35,7 +35,7 @@ export function useMe(enabled = true) {
   // Update auth store when data changes
   useEffect(() => {
     if (query.data) {
-      const userLanguage = query.data.preferLanguage || 'en';
+      const userLanguage = query.data.preferLanguage || 'zh';
 
       setUser(query.data);
 
@@ -61,7 +61,7 @@ export function useSignIn() {
       // Store token in localStorage
       setTokenToStorage(data.token);
 
-      const userLanguage = data.user.preferLanguage || 'en';
+      const userLanguage = data.user.preferLanguage || 'zh';
 
       // Update auth store
       setAccessToken(data.token);
@@ -150,7 +150,7 @@ export function useOIDCExchange() {
       // Store token in localStorage
       setTokenToStorage(data.token);
 
-      const userLanguage = data.user.preferLanguage || 'en';
+      const userLanguage = data.user.preferLanguage || 'zh';
 
       // Update auth store
       setAccessToken(data.token);

@@ -40,7 +40,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en',
+    lng: 'zh',
+    fallbackLng: 'zh',
     debug: false,
     supportedLngs: ['en', 'zh', 'zh-CN'],
 
@@ -60,14 +61,17 @@ i18n
     },
 
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['localStorage', 'htmlTag', 'navigator'],
       caches: ['localStorage'],
       convertDetectedLanguage: (lng: string) => {
         const normalized = lng.toLowerCase();
         if (normalized === 'zh-cn' || normalized.startsWith('zh-')) {
           return 'zh';
         }
-        return lng;
+        if (normalized === 'en') {
+          return 'zh';
+        }
+        return 'zh';
       },
     },
   });

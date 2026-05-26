@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedPermissionRouteImport } from './routes/_authenticated/permission'
+import { Route as AuthenticatedMinimalismRouteImport } from './routes/_authenticated/minimalism'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -66,6 +67,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
 const AuthenticatedPermissionRoute = AuthenticatedPermissionRouteImport.update({
   id: '/permission',
   path: '/permission',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMinimalismRoute = AuthenticatedMinimalismRouteImport.update({
+  id: '/minimalism',
+  path: '/minimalism',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/minimalism': typeof AuthenticatedMinimalismRoute
   '/permission': typeof AuthenticatedPermissionRoute
   '/dashboard/channel-success-rates': typeof AuthenticatedDashboardChannelSuccessRatesRoute
   '/requests/$requestId': typeof AuthenticatedRequestsRequestIdRoute
@@ -357,6 +364,7 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/minimalism': typeof AuthenticatedMinimalismRoute
   '/permission': typeof AuthenticatedPermissionRoute
   '/': typeof AuthenticatedIndexRoute
   '/dashboard/channel-success-rates': typeof AuthenticatedDashboardChannelSuccessRatesRoute
@@ -404,6 +412,7 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/_authenticated/minimalism': typeof AuthenticatedMinimalismRoute
   '/_authenticated/permission': typeof AuthenticatedPermissionRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/dashboard/channel-success-rates': typeof AuthenticatedDashboardChannelSuccessRatesRoute
@@ -452,6 +461,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/minimalism'
     | '/permission'
     | '/dashboard/channel-success-rates'
     | '/requests/$requestId'
@@ -495,6 +505,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/minimalism'
     | '/permission'
     | '/'
     | '/dashboard/channel-success-rates'
@@ -541,6 +552,7 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/_authenticated/minimalism'
     | '/_authenticated/permission'
     | '/_authenticated/'
     | '/_authenticated/dashboard/channel-success-rates'
@@ -611,6 +623,13 @@ declare module '@tanstack/react-router' {
       path: '/permission'
       fullPath: '/permission'
       preLoaderRoute: typeof AuthenticatedPermissionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/minimalism': {
+      id: '/_authenticated/minimalism'
+      path: '/minimalism'
+      fullPath: '/minimalism'
+      preLoaderRoute: typeof AuthenticatedMinimalismRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(errors)/503': {
@@ -928,6 +947,7 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedMinimalismRoute: typeof AuthenticatedMinimalismRoute
   AuthenticatedPermissionRoute: typeof AuthenticatedPermissionRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedDashboardChannelSuccessRatesRoute: typeof AuthenticatedDashboardChannelSuccessRatesRoute
@@ -959,6 +979,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedMinimalismRoute: AuthenticatedMinimalismRoute,
   AuthenticatedPermissionRoute: AuthenticatedPermissionRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedDashboardChannelSuccessRatesRoute:

@@ -57,7 +57,7 @@ function CollapsibleSection({ title, icon, children, storageKey, defaultOpen = f
       <button
         type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className='flex w-full items-center justify-between rounded-lg border border-border/85 bg-card/88 px-4 py-3.5 text-left transition-[background-color,border-color,box-shadow] hover:border-ring/20 hover:bg-accent/45 hover:shadow-xs'
+        className='flex w-full items-center justify-between rounded-lg border border-border/80 bg-card/45 px-4 py-3.5 text-left transition-[background-color,border-color,box-shadow] hover:border-primary/45 hover:bg-accent/35 hover:shadow-sm'
       >
         <div className='flex items-center gap-3'>
           <div className='flex h-8 w-8 items-center justify-center rounded-md border border-border/80 bg-secondary text-primary'>
