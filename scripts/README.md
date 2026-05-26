@@ -45,9 +45,10 @@ AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="..." \
 工作流文件：`.github/workflows/deploy-axonhub.yml`
 
 默认行为：
-- `push` 到 `unstable`、`development`、`codex/**` 时只做构建校验
+- `push` 到 `unstable` 时，先做构建校验，再自动部署到服务器
+- `push` 到 `development`、`codex/**` 时只做构建校验
 - `workflow_dispatch` 手动触发时可执行 `deploy` 或 `rollback`
-- `deploy` 会让服务器直接从 GitHub 下载构建产物，避免 Runner 到生产机的大文件慢链路
+- 自动部署和手动 `deploy` 都会让服务器直接拉源码并本机编译，避免 Runner 到生产机的大文件慢链路
 
 #### `deploy/bootstrap-build-host.sh`
 在生产机上一次性安装 AxonHub 源码构建所需的 Go、Node.js 和 pnpm。默认还会补一个 `2G` 的 `/swapfile`，避免 `vite build` 在 `2C4G` 机器上因为 Node 堆内存不足而中断；如不需要，可传 `AXONHUB_DEPLOY_SWAP_SIZE=0` 关闭。
@@ -69,7 +70,8 @@ AXONHUB_DEPLOY_SOURCE_REF=<sha-or-branch> ./scripts/deploy/deploy-from-source.sh
 - `AXONHUB_DEPLOY_NPM_REGISTRY`：pnpm/npm registry
 
 新的推荐工作流：
-- `push` 到 `unstable`、`development`、`codex/**` 时只做 GitHub 构建校验
+- `push` 到 `unstable` 时自动部署到服务器
+- `push` 到 `development`、`codex/**` 时只做 GitHub 构建校验
 - `workflow_dispatch` 执行 `deploy` 时，服务器直接拉源码并本机编译，避免下载大二进制
 - 部署脚本会把远端构建日志输出到 stderr，只把最终备份路径回传给回滚逻辑，避免失败时误把日志当成回滚目标
 

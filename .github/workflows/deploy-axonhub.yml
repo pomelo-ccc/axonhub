@@ -86,7 +86,65 @@ jobs:
       - name: Build linux amd64 backend
         run: GOOS=linux GOARCH=amd64 make build-backend
 
-  deploy:
+  deploy_unstable:
+    if: ${{ github.event_name == 'push' && github.ref_name == 'unstable' }}
+    name: Deploy unstable to production
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment: production
+    concurrency:
+      group: axonhub-production
+      cancel-in-progress: false
+    env:
+      AXONHUB_DEPLOY_HOST: ${{ secrets.AXONHUB_DEPLOY_HOST }}
+      AXONHUB_DEPLOY_SSH_KEY: ${{ secrets.AXONHUB_DEPLOY_SSH_KEY }}
+      AXONHUB_DEPLOY_KNOWN_HOSTS: ${{ secrets.AXONHUB_DEPLOY_KNOWN_HOSTS }}
+      AXONHUB_DEPLOY_USER: ${{ vars.AXONHUB_DEPLOY_USER }}
+      AXONHUB_DEPLOY_PORT: ${{ vars.AXONHUB_DEPLOY_PORT }}
+      AXONHUB_DEPLOY_SERVICE: ${{ vars.AXONHUB_DEPLOY_SERVICE }}
+      AXONHUB_DEPLOY_BINARY_PATH: ${{ vars.AXONHUB_DEPLOY_BINARY_PATH }}
+      AXONHUB_DEPLOY_BACKUP_DIR: ${{ vars.AXONHUB_DEPLOY_BACKUP_DIR }}
+      AXONHUB_DEPLOY_TMP_DIR: ${{ vars.AXONHUB_DEPLOY_TMP_DIR }}
+      AXONHUB_LOCAL_HEALTHCHECK_URL: ${{ vars.AXONHUB_LOCAL_HEALTHCHECK_URL }}
+      AXONHUB_PUBLIC_HEALTHCHECK_URL: ${{ vars.AXONHUB_PUBLIC_HEALTHCHECK_URL }}
+      AXONHUB_SECONDARY_HEALTHCHECK_URL: ${{ vars.AXONHUB_SECONDARY_HEALTHCHECK_URL }}
+      AXONHUB_SECONDARY_HEALTHCHECK_STRICT: ${{ vars.AXONHUB_SECONDARY_HEALTHCHECK_STRICT }}
+      AXONHUB_DEPLOY_SOURCE_ARCHIVE_BASE_URL: ${{ vars.AXONHUB_DEPLOY_SOURCE_ARCHIVE_BASE_URL }}
+      AXONHUB_DEPLOY_BUILD_ROOT: ${{ vars.AXONHUB_DEPLOY_BUILD_ROOT }}
+      AXONHUB_DEPLOY_BASE_PATH: ${{ vars.AXONHUB_DEPLOY_BASE_PATH }}
+      AXONHUB_DEPLOY_GOPROXY: ${{ vars.AXONHUB_DEPLOY_GOPROXY }}
+      AXONHUB_DEPLOY_NPM_REGISTRY: ${{ vars.AXONHUB_DEPLOY_NPM_REGISTRY }}
+      AXONHUB_DEPLOY_NODE_OPTIONS: ${{ vars.AXONHUB_DEPLOY_NODE_OPTIONS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${AXONHUB_DEPLOY_SSH_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          if [[ -n "${AXONHUB_DEPLOY_KNOWN_HOSTS}" ]]; then
+            printf '%s\n' "${AXONHUB_DEPLOY_KNOWN_HOSTS}" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "${AXONHUB_DEPLOY_PORT:-22}" -H "${AXONHUB_DEPLOY_HOST}" >> ~/.ssh/known_hosts
+          fi
+
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy from source
+        run: |
+          export AXONHUB_DEPLOY_SSH_IDENTITY_FILE="$HOME/.ssh/id_ed25519"
+          export AXONHUB_DEPLOY_KNOWN_HOSTS_FILE="$HOME/.ssh/known_hosts"
+          export AXONHUB_DEPLOY_SOURCE_REF="${GITHUB_SHA}"
+          ./scripts/deploy/deploy-from-source.sh
+
+  deploy_manual:
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.action == 'deploy' }}
     name: Deploy to production
     runs-on: ubuntu-latest
