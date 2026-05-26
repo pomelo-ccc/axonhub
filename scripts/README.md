@@ -57,7 +57,7 @@ AXONHUB_DEPLOY_REMOTE_ARCHIVE_SHA256="..." \
 ```
 
 #### `deploy/deploy-from-source.sh`
-让生产机直接拉取指定 Git ref 的源码，在服务器本机完成前端和后端构建，然后发布并做健康检查。
+让生产机直接拉取指定 commit 的源码包，在服务器本机完成前端和后端构建，然后发布并做健康检查。
 
 ```bash
 AXONHUB_DEPLOY_SOURCE_REF=<sha-or-branch> ./scripts/deploy/deploy-from-source.sh

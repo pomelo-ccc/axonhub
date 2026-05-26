@@ -15,9 +15,8 @@ deploy_binary_path="${AXONHUB_DEPLOY_BINARY_PATH:-/usr/local/bin/axonhub}"
 deploy_backup_dir="${AXONHUB_DEPLOY_BACKUP_DIR:-/root/axonhub-backups}"
 deploy_identity_file="${AXONHUB_DEPLOY_SSH_IDENTITY_FILE:-}"
 deploy_known_hosts_file="${AXONHUB_DEPLOY_KNOWN_HOSTS_FILE:-}"
-deploy_source_repo_url="${AXONHUB_DEPLOY_SOURCE_REPO_URL:-https://github.com/pomelo-ccc/axonhub.git}"
-deploy_source_dir="${AXONHUB_DEPLOY_SOURCE_DIR:-/root/axonhub-source}"
-deploy_worktree_dir="${AXONHUB_DEPLOY_WORKTREE_DIR:-/root/axonhub-builds/worktrees}"
+deploy_source_archive_base_url="${AXONHUB_DEPLOY_SOURCE_ARCHIVE_BASE_URL:-https://codeload.github.com/pomelo-ccc/axonhub/tar.gz}"
+deploy_build_root="${AXONHUB_DEPLOY_BUILD_ROOT:-/root/axonhub-builds/source-builds}"
 deploy_base_path="${AXONHUB_DEPLOY_BASE_PATH:-/api/}"
 deploy_go_proxy="${AXONHUB_DEPLOY_GOPROXY:-https://goproxy.cn,direct}"
 deploy_npm_registry="${AXONHUB_DEPLOY_NPM_REGISTRY:-https://registry.npmmirror.com}"
@@ -63,10 +62,9 @@ trap 'rollback_on_failure $?' EXIT
 printf 'Building and deploying ref %s on %s...\n' "${deploy_ref}" "${deploy_host}"
 remote_backup_path="$(
   ssh "${ssh_opts[@]}" "${deploy_user}@${deploy_host}" bash -s -- \
-    "${deploy_source_repo_url}" \
+    "${deploy_source_archive_base_url}" \
     "${deploy_ref}" \
-    "${deploy_source_dir}" \
-    "${deploy_worktree_dir}" \
+    "${deploy_build_root}" \
     "${deploy_binary_path}" \
     "${deploy_backup_dir}" \
     "${deploy_service}" \
@@ -76,17 +74,16 @@ remote_backup_path="$(
     "${deploy_npm_registry}" <<'REMOTE'
 set -euo pipefail
 
-source_repo_url="$1"
+source_archive_base_url="$1"
 source_ref="$2"
-source_dir="$3"
-worktree_dir="$4"
-binary_path="$5"
-backup_dir="$6"
-service_name="$7"
-deployment_id="$8"
-base_path="$9"
-go_proxy="${10}"
-npm_registry="${11}"
+build_root="$3"
+binary_path="$4"
+backup_dir="$5"
+service_name="$6"
+deployment_id="$7"
+base_path="$8"
+go_proxy="${9}"
+npm_registry="${10}"
 
 export PATH="/usr/local/go/bin:/usr/local/bin:${PATH}"
 export GOPROXY="${go_proxy}"
@@ -100,43 +97,38 @@ if ! command -v go >/dev/null || ! command -v node >/dev/null || ! command -v pn
   exit 1
 fi
 
-mkdir -p "${worktree_dir}" "${backup_dir}"
+mkdir -p "${build_root}" "${backup_dir}"
 
-if [[ ! -d "${source_dir}/.git" ]]; then
-  git clone --filter=blob:none "${source_repo_url}" "${source_dir}"
-fi
-
-git -C "${source_dir}" fetch --tags --prune origin
-resolved_sha="$(
-  git -C "${source_dir}" rev-parse --verify "${source_ref}^{commit}" 2>/dev/null ||
-  git -C "${source_dir}" rev-parse --verify "origin/${source_ref}^{commit}" 2>/dev/null
-)"
-
-if [[ -z "${resolved_sha}" ]]; then
-  echo "Unable to resolve git ref: ${source_ref}" >&2
-  exit 1
-fi
-
-short_sha="${resolved_sha:0:12}"
-worktree_path="${worktree_dir%/}/${deployment_id}-${short_sha}"
+short_sha="${source_ref:0:12}"
+build_path="${build_root%/}/${deployment_id}-${short_sha}"
+archive_path="/tmp/axonhub-source-${deployment_id}.tar.gz"
 
 cleanup() {
-  if [[ -d "${worktree_path}" ]]; then
-    git -C "${source_dir}" worktree remove --force "${worktree_path}" >/dev/null 2>&1 || rm -rf "${worktree_path}"
-  fi
+  rm -rf "${build_path}" "${archive_path}"
 }
 
 trap cleanup EXIT
 
-git -C "${source_dir}" worktree add --detach "${worktree_path}" "${resolved_sha}" >/dev/null
+curl \
+  --fail \
+  --location \
+  --retry 3 \
+  --retry-delay 2 \
+  --connect-timeout 15 \
+  --max-time 1800 \
+  --output "${archive_path}" \
+  "${source_archive_base_url%/}/${source_ref}"
 
-(cd "${worktree_path}/frontend" && pnpm install --frozen-lockfile --prefer-offline)
-(cd "${worktree_path}" && VITE_BASE_PATH="${base_path}" make build-frontend)
-(cd "${worktree_path}" && GOOS=linux GOARCH=amd64 make build-backend)
+mkdir -p "${build_path}"
+tar -xzf "${archive_path}" --strip-components=1 -C "${build_path}"
+
+(cd "${build_path}/frontend" && pnpm install --frozen-lockfile --prefer-offline)
+(cd "${build_path}" && VITE_BASE_PATH="${base_path}" make build-frontend)
+(cd "${build_path}" && GOOS=linux GOARCH=amd64 make build-backend)
 
 backup_path="${backup_dir%/}/axonhub.before_${deployment_id}"
 cp "${binary_path}" "${backup_path}"
-install -m 755 "${worktree_path}/axonhub" "${binary_path}"
+install -m 755 "${build_path}/axonhub" "${binary_path}"
 systemctl restart "${service_name}"
 
 printf '%s\n' "${backup_path}"
