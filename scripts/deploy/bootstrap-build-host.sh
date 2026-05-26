@@ -8,6 +8,7 @@ pnpm_version="${AXONHUB_DEPLOY_PNPM_VERSION:-10.11.0}"
 bootstrap_tmp_dir="${AXONHUB_DEPLOY_TMP_DIR:-/tmp}"
 go_dist_base_url="${AXONHUB_DEPLOY_GO_DIST_BASE_URL:-https://mirrors.aliyun.com/golang}"
 node_dist_base_url="${AXONHUB_DEPLOY_NODE_DIST_BASE_URL:-https://cdn.npmmirror.com/binaries/node}"
+swap_size="${AXONHUB_DEPLOY_SWAP_SIZE:-2G}"
 
 go_archive="go${go_version}.linux-amd64.tar.gz"
 go_url="${go_dist_base_url%/}/${go_archive}"
@@ -17,6 +18,25 @@ node_url="${node_dist_base_url%/}/v${node_version}/${node_archive}"
 
 ensure_system_packages() {
   dnf install -y curl git make tar xz unzip >/dev/null
+}
+
+ensure_swap() {
+  if [[ -z "${swap_size}" || "${swap_size}" == "0" ]]; then
+    return
+  fi
+
+  if swapon --show --noheadings | awk '{print $1}' | grep -qx '/swapfile'; then
+    return
+  fi
+
+  fallocate -l "${swap_size}" /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile >/dev/null
+  swapon /swapfile
+
+  if ! grep -q '^/swapfile ' /etc/fstab; then
+    printf '/swapfile none swap defaults 0 0\n' >> /etc/fstab
+  fi
 }
 
 install_go() {
@@ -65,6 +85,7 @@ install_pnpm() {
 
 main() {
   ensure_system_packages
+  ensure_swap
   install_go
   install_node
   install_pnpm
@@ -72,6 +93,7 @@ main() {
   printf 'go=%s\n' "$(go version)"
   printf 'node=%s\n' "$(node -v)"
   printf 'pnpm=%s\n' "$(pnpm -v)"
+  printf 'swap=%s\n' "$(swapon --show --noheadings --bytes | awk '{sum += $3} END {print sum + 0}')"
 }
 
 main "$@"
