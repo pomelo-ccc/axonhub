@@ -9,6 +9,7 @@ import { LanguageSwitch } from '@/components/language-switch';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { QuotaBadges } from '@/components/quota-badges';
 import { PermissionGuard } from '@/components/permission-guard';
+import { HomePortalLink } from '@/components/home-portal-link';
 import { checkProviderQuotas } from '@/features/system/data/quotas';
 import { useBrandSettings } from '@/features/system/data/system';
 import { ProjectSwitcher } from './project-switcher';
@@ -46,6 +47,7 @@ export function AppHeader() {
     <header className='fixed top-0 z-50 w-full border-b border-border/80 bg-background/88 backdrop-blur-md'>
       <div className='flex h-14 items-center justify-between px-4 sm:px-6'>
         <div className='flex min-w-0 items-center gap-3'>
+          <HomePortalLink />
           <SidebarTrigger className='size-8 rounded-full' />
 
           <div className='flex min-w-0 items-center gap-3'>

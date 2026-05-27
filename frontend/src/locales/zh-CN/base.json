@@ -119,6 +119,7 @@
   "common.loadError": "加载失败:",
   "common.error": "错误",
   "common.back": "返回",
+  "common.homePortal": "返回首页",
   "common.moveToTop": "移动到顶部",
   "common.moveToBottom": "移动到底部",
   "common.unsavedChanges": "您有未保存的更改",

@@ -77,6 +77,7 @@
   "common.loadError": "Load failed:",
   "common.error": "Error",
   "common.back": "Back",
+  "common.homePortal": "Back to Home",
   "common.moveToTop": "Move to top",
   "common.moveToBottom": "Move to bottom",
   "common.unsavedChanges": "You have unsaved changes",
