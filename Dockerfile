@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
 COPY ./frontend .
-ARG VITE_BASE_PATH=/
+ARG VITE_BASE_PATH=/api/
 ENV VITE_BASE_PATH=${VITE_BASE_PATH}
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm build
