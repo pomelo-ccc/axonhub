@@ -38,6 +38,18 @@ export function toAppPath(path: string) {
   return `${APP_BASE_PATH}${normalizedPath}`;
 }
 
+export function resolveAppAssetPath(path?: string | null, fallbackPath = '/logo.jpg') {
+  if (!path) {
+    return toAppPath(fallbackPath);
+  }
+
+  if (isAbsoluteUrl(path)) {
+    return path;
+  }
+
+  return toAppPath(path);
+}
+
 export function toPublicBackendPath(path: string) {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 

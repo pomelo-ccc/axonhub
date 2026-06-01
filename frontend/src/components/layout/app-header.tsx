@@ -10,12 +10,20 @@ import { ThemeSwitch } from '@/components/theme-switch';
 import { QuotaBadges } from '@/components/quota-badges';
 import { PermissionGuard } from '@/components/permission-guard';
 import { HomePortalLink } from '@/components/home-portal-link';
+import { BrandLogoImage } from '@/components/brand-logo-image';
 import { checkProviderQuotas } from '@/features/system/data/quotas';
 import { useBrandSettings } from '@/features/system/data/system';
+import { HeaderUserMenu } from './header-user-menu';
 import { ProjectSwitcher } from './project-switcher';
+import { TopNavigationGroups } from './top-navigation-groups';
+import { SidebarData } from './types';
 import { toast } from 'sonner';
 
-export function AppHeader() {
+interface AppHeaderProps {
+  sidebarData: SidebarData;
+}
+
+export function AppHeader({ sidebarData }: AppHeaderProps) {
   const { data: brandSettings } = useBrandSettings();
   const { t } = useTranslation();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -45,27 +53,14 @@ export function AppHeader() {
 
   return (
     <header className='fixed top-0 z-50 w-full border-b border-border/80 bg-background/88 backdrop-blur-md'>
-      <div className='flex h-14 items-center justify-between px-4 sm:px-6'>
+      <div className='flex h-16 items-center justify-between px-4 sm:px-6'>
         <div className='flex min-w-0 items-center gap-3'>
           <HomePortalLink />
-          <SidebarTrigger className='size-8 rounded-full' />
+          {isMobile && <SidebarTrigger className='size-8 rounded-full' />}
 
           <div className='flex min-w-0 items-center gap-3'>
             <div className='flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border/80 bg-card/80'>
-              {brandSettings?.brandLogo ? (
-                <img
-                  src={brandSettings.brandLogo}
-                  alt='Brand Logo'
-                  width={28}
-                  height={28}
-                  className='size-8 object-cover'
-                  onError={(e) => {
-                    e.currentTarget.src = '/logo.jpg';
-                  }}
-                />
-              ) : (
-                <img src='/logo.jpg' alt='Default Logo' width={24} height={24} className='size-8 object-cover' />
-              )}
+              <BrandLogoImage src={brandSettings?.brandLogo} alt='Brand Logo' width={28} height={28} className='size-8 object-cover' />
             </div>
             <div className='min-w-0'>
               <span className='block truncate text-sm font-medium tracking-[-0.01em]'>{displayName}</span>
@@ -73,14 +68,14 @@ export function AppHeader() {
             </div>
           </div>
 
-          <div className='hidden h-6 w-px bg-border/70 md:block' />
-          <div className='hidden md:block'>
+          <div className='hidden h-6 w-px bg-border/70 lg:block' />
+          <div className='hidden lg:block'>
             <ProjectSwitcher />
           </div>
         </div>
 
         <div className='flex items-center gap-2'>
-          <QuotaBadges onRefresh={handleRefresh} isRefreshing={isRefreshing} />
+          {!isMobile && <QuotaBadges onRefresh={handleRefresh} isRefreshing={isRefreshing} />}
 
           {!isMobile && (
             <>
@@ -93,10 +88,13 @@ export function AppHeader() {
               </PermissionGuard>
               <LanguageSwitch />
               <ThemeSwitch />
+              <HeaderUserMenu user={sidebarData.user} />
             </>
           )}
         </div>
       </div>
+
+      <TopNavigationGroups navGroups={sidebarData.navGroups} />
     </header>
   );
 }

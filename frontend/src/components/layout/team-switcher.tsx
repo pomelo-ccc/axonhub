@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { BrandLogoImage } from '@/components/brand-logo-image';
 import { useBrandSettings } from '@/features/system/data/system';
 
 export function TeamSwitcher({
@@ -41,26 +42,7 @@ export function TeamSwitcher({
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'>
                 <div className='bg-sidebar-primary flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg'>
-                  {brandSettings?.brandLogo ? (
-                    <img
-                      src={brandSettings.brandLogo}
-                      alt='Brand Logo'
-                      className='size-8 object-cover'
-                      onError={(e) => {
-                        // Fallback to default logo on error
-                        e.currentTarget.src = '/logo.jpg';
-                      }}
-                    />
-                  ) : (
-                    <img
-                      src='/logo.jpg'
-                      alt='Default Logo'
-                      className='size-8 object-cover'
-                      onError={() => {
-                        // If default logo fails, we'll show a fallback in the next render
-                      }}
-                    />
-                  )}
+                  <BrandLogoImage src={brandSettings?.brandLogo} alt='Brand Logo' className='size-8 object-cover' />
                 </div>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>{displayName}</span>
@@ -91,26 +73,7 @@ export function TeamSwitcher({
         ) : (
           <SidebarMenuButton size='lg' className='cursor-default'>
             <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg'>
-              {brandSettings?.brandLogo ? (
-                <img
-                  src={brandSettings.brandLogo}
-                  alt='Brand Logo'
-                  className='size-8 object-cover'
-                  onError={(e) => {
-                    // Fallback to default logo on error
-                    e.currentTarget.src = '/logo.jpg';
-                  }}
-                />
-              ) : (
-                <img
-                  src='/logo.jpg'
-                  alt='Default Logo'
-                  className='size-8 object-cover'
-                  onError={() => {
-                    // If default logo fails, we'll show a fallback in the next render
-                  }}
-                />
-              )}
+              <BrandLogoImage src={brandSettings?.brandLogo} alt='Brand Logo' className='size-8 object-cover' />
             </div>
             <div className='grid flex-1 text-left text-sm leading-tight'>
               <span className='truncate font-semibold'>{displayName}</span>

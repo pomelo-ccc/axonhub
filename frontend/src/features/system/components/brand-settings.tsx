@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { resolveAppAssetPath } from '@/lib/app-base';
 import { useSystemContext } from '../context/system-context';
 import { useBrandSettings, useUpdateBrandSettings } from '../data/system';
 
@@ -119,7 +120,7 @@ export function BrandSettings() {
               <div className='mb-4 flex justify-start'>
                 <div className='relative'>
                   <img
-                    src={brandLogo}
+                    src={resolveAppAssetPath(brandLogo, '/logo.jpg')}
                     alt='Brand Logo Preview'
                     className='h-32 w-32 rounded-xl border border-border/70 object-cover shadow-none'
                     onError={(e) => {

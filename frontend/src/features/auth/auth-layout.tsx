@@ -1,5 +1,6 @@
 import { LanguageSwitch } from '@/components/language-switch';
 import { HomePortalLink } from '@/components/home-portal-link';
+import { BrandLogoImage } from '@/components/brand-logo-image';
 
 interface Props {
   children: React.ReactNode;
@@ -28,7 +29,7 @@ export default function AuthLayout({ children }: Props) {
       <nav className='relative z-20 flex items-center justify-between px-6 py-5 lg:px-10'>
         <div className='flex items-center gap-3'>
           <HomePortalLink />
-          <img src='/logo.jpg' alt='AxonHub logo' className='h-9 w-9 rounded-md border border-border/80 bg-card/80 object-cover' />
+          <BrandLogoImage src='/logo.jpg' alt='AxonHub logo' className='h-9 w-9 rounded-md border border-border/80 bg-card/80 object-cover' />
           <div>
             <p className='text-[11px] uppercase tracking-[0.18em] text-muted-foreground'>AxonHub</p>
             <h1 className='text-sm font-medium tracking-[-0.01em]'>API Control Surface</h1>

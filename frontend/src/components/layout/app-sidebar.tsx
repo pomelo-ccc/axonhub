@@ -11,6 +11,10 @@ type IProps = React.ComponentProps<typeof Sidebar> & {
 export function AppSidebar({ sidebarData, ...props }: IProps) {
   const { isMobile } = useSidebar();
 
+  if (!isMobile) {
+    return null;
+  }
+
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarContent>
