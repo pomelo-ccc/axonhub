@@ -21,6 +21,8 @@ FROM golang:alpine AS backend-builder
 WORKDIR /build
 
 RUN apk add --no-cache git ca-certificates tzdata
+ENV GOPROXY=https://goproxy.cn,direct
+ENV GOSUMDB=sum.golang.google.cn
 
 COPY go.mod go.sum ./
 COPY llm/go.mod llm/go.sum llm/
