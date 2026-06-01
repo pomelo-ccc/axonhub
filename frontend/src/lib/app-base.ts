@@ -9,8 +9,30 @@ const normalizeBasePath = (value?: string) => {
 
 const isAbsoluteUrl = (value: string) => /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(value) || value.startsWith('//');
 
+const inferRuntimeBasePath = () => {
+  if (typeof document === 'undefined') {
+    return '';
+  }
+
+  const assetScript = document.querySelector<HTMLScriptElement>('script[src*="/assets/"]');
+  const rawSrc = assetScript?.getAttribute('src');
+
+  if (!rawSrc) {
+    return '';
+  }
+
+  try {
+    const pathname = new URL(rawSrc, window.location.origin).pathname;
+    const matchedPath = pathname.match(/^(.*)\/assets\/[^/]+$/);
+    return matchedPath?.[1] && matchedPath[1] !== '/' ? matchedPath[1] : '';
+  } catch {
+    return '';
+  }
+};
+
 export const APP_BASE_URL = normalizeBasePath(import.meta.env.BASE_URL);
 export const APP_BASE_PATH = APP_BASE_URL === '/' ? '' : APP_BASE_URL.replace(/\/$/, '');
+export const RUNTIME_APP_BASE_PATH = APP_BASE_PATH || inferRuntimeBasePath();
 export const PUBLIC_ADMIN_PATH = '/console';
 const PUBLIC_PATH_ALIASES: Record<string, string> = {
   '/admin/system/status': '/bootstrap/status',
@@ -26,16 +48,17 @@ export function toAppPath(path: string) {
   }
 
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const effectiveBasePath = RUNTIME_APP_BASE_PATH;
 
-  if (!APP_BASE_PATH) {
+  if (!effectiveBasePath) {
     return normalizedPath;
   }
 
-  if (normalizedPath === APP_BASE_PATH || normalizedPath.startsWith(`${APP_BASE_PATH}/`)) {
+  if (normalizedPath === effectiveBasePath || normalizedPath.startsWith(`${effectiveBasePath}/`)) {
     return normalizedPath;
   }
 
-  return `${APP_BASE_PATH}${normalizedPath}`;
+  return `${effectiveBasePath}${normalizedPath}`;
 }
 
 export function resolveAppAssetPath(path?: string | null, fallbackPath = '/logo.jpg') {
@@ -74,16 +97,18 @@ export function buildAbsoluteAppUrl(path: string) {
 }
 
 export function getCurrentAppPath(pathname = typeof window !== 'undefined' ? window.location.pathname : '/') {
-  if (!APP_BASE_PATH) {
+  const effectiveBasePath = RUNTIME_APP_BASE_PATH;
+
+  if (!effectiveBasePath) {
     return pathname || '/';
   }
 
-  if (pathname === APP_BASE_PATH) {
+  if (pathname === effectiveBasePath) {
     return '/';
   }
 
-  if (pathname.startsWith(`${APP_BASE_PATH}/`)) {
-    return pathname.slice(APP_BASE_PATH.length) || '/';
+  if (pathname.startsWith(`${effectiveBasePath}/`)) {
+    return pathname.slice(effectiveBasePath.length) || '/';
   }
 
   return pathname || '/';
