@@ -9,7 +9,7 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
 COPY ./frontend .
 ARG VITE_BASE_PATH=/api/
 ENV VITE_BASE_PATH=${VITE_BASE_PATH}
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=3072"
 RUN pnpm build
 
 # Copy dist to a stage with the target platform to avoid architecture mismatch
