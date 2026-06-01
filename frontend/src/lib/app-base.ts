@@ -10,8 +10,28 @@ const normalizeBasePath = (value?: string) => {
 const isAbsoluteUrl = (value: string) => /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(value) || value.startsWith('//');
 
 const inferRuntimeBasePath = () => {
-  if (typeof document === 'undefined') {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
     return '';
+  }
+
+  const pathSegments = window.location.pathname.split('/').filter(Boolean);
+  const firstSegment = pathSegments[0];
+
+  if (firstSegment) {
+    const reservedTopLevelRoutes = new Set([
+      'sign-in',
+      'sign-up',
+      'initialization',
+      'forgot-password',
+      'otp',
+      'console',
+      'bootstrap',
+      'session',
+    ]);
+
+    if (!reservedTopLevelRoutes.has(firstSegment)) {
+      return `/${firstSegment}`;
+    }
   }
 
   const assetScript = document.querySelector<HTMLScriptElement>('script[src*="/assets/"]');
