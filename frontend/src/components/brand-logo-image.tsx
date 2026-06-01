@@ -8,14 +8,36 @@ interface BrandLogoImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElem
 }
 
 export function BrandLogoImage({ src, alt = 'Brand Logo', className, ...props }: BrandLogoImageProps) {
-  const defaultSrc = React.useMemo(() => resolveAppAssetPath('/logo.jpg'), []);
-  const [resolvedSrc, setResolvedSrc] = React.useState(() => resolveAppAssetPath(src, '/logo.jpg'));
+  const defaultSrc = React.useMemo(() => {
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/api')) {
+      return '/api/logo.jpg';
+    }
+
+    return resolveAppAssetPath('/logo.jpg');
+  }, []);
+
+  const resolveLogoSrc = React.useCallback(
+    (nextSrc?: string | null) => {
+      if (!nextSrc) {
+        return defaultSrc;
+      }
+
+      if (nextSrc === '/logo.jpg') {
+        return defaultSrc;
+      }
+
+      return resolveAppAssetPath(nextSrc, defaultSrc);
+    },
+    [defaultSrc]
+  );
+
+  const [resolvedSrc, setResolvedSrc] = React.useState(() => resolveLogoSrc(src));
   const [hasFailed, setHasFailed] = React.useState(false);
 
   React.useEffect(() => {
-    setResolvedSrc(resolveAppAssetPath(src, '/logo.jpg'));
+    setResolvedSrc(resolveLogoSrc(src));
     setHasFailed(false);
-  }, [src]);
+  }, [resolveLogoSrc, src]);
 
   if (hasFailed) {
     return (
